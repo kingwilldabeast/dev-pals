@@ -1,0 +1,24 @@
+{
+  "name": "dev-pals",
+  "version": "1.0.0",
+  "description": "## Members: * Will Isenberg https://github.com/kingwilldabeast/dev-pals * Leon Hinds https://github.com/lhinds86 * Azalea Nikitin https://github.com/AzaleaTopaz * Parker Pace https://github.com/parpace",
+  "main": "server.js", 
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node server.js",
+    "dev":"nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
