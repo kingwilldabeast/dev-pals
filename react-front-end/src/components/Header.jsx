@@ -1,15 +1,10 @@
-import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import Nav from './Nav'
 
-export default function Header (props) {
-    console.log(props)
-    const thing = ""
-    return (
-      
-      <div className="">
-        <h2>Hello</h2>
-  
-      </div>
-    )
-  }
+export default function Header () {
+  return (
+    <div>
+      <h1>Header</h1>
+      <Nav/>
+    </div>
+  )
+}
