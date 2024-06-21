@@ -25,6 +25,38 @@ Stretch Goals:
 * comments on comments
 * befriend other users with bi-directional relationship where each user has an array of friends and appears in their list as well
 
+Team Member duties:
+* Parker: front end React
+* Leon: front end Styles
+* Azalea: back end 
+* Will: back end 
+
+Friday: (all members)
+* set up all files and import everything
+* plan ERD and components and models/schemas 
+* define editing permission rules in GitHub
+
+Monday:
+* Parker: Main and Nav, Footer and Header links
+* Leon: Sign in and Log in page (Main) and passwords
+* Azalea: model/Schema/controller for user
+* Will: model/Schema/controller for posts and comments
+
+Tuesday:
+* Parker: async axios call
+* Leon: user, post, comment design
+* Azalea: back end CRUD, seedfile
+* Will: back end CRUD
+
+Wednesday:
+* Parker: front end CRUD
+* Leon: front end CRUD
+* Azalea: back end CRUD, continued
+* Will: back end CRUD, continued 
+
+Thursday:
+* test and final debugging
+
 Technologies used:
 * JavaScript
 * CSS/HTML
@@ -49,6 +81,4 @@ Wireframe:
 
 
 Trello project: https://trello.com/b/kXzXRxpJ
-
-
 
