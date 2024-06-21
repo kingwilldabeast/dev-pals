@@ -41,5 +41,12 @@ Entity relationship Diagram (backend):
 
 ![Entity Relationship Diagram](planning_materials/ERD.png)
 
+Wireframe:
+
+![Wireframe](planning_materials/Dev-Pals-Wireframe-User%20Account%20Page.drawio.png)
+![Wireframe](planning_materials/Dev-Pals-Wireframe-Login%20Page.drawio.png)
+![Wireframe](planning_materials/Dev-Pals-Wireframe-Sign%20up%20Page.drawio.png)
+
+
 Trello project: https://trello.com/b/kXzXRxpJ
 
