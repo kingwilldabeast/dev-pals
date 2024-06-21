@@ -15,39 +15,36 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
 
 //FILEPATHS
-const BrandController = require('./controllers/BrandController')
-const BicycleController = require('./controllers/BicycleController')
-const BellController = require('./controllers/BellController')
+const UserController = require('./controllers/UserController')
+const PostController = require('./controllers/PostController')
+const CommentController = require('./controllers/CommentController')
 
 //LANDING PAGE
 app.get('/', (req, res) => res.send('This is our landing page!'))
 
 //READ GET 
-app.get('/brands', BrandController.getAllBrands)
-app.get('/bicycles', BicycleController.getAllBicycles)
-app.get('/bells', BellController.getAllBells)
+app.get('/users', UserController.getAllUsers)
+app.get('/posts', PostController.getAllPosts)
+app.get('/comments', CommentController.getAllComments)
 
-app.get('/brands/:id', BrandController.getBrandById)
-app.get('/bicycles/:id', BicycleController.getBicycleById)
-app.get('/bells/:id', BellController.getBellById)
-
-app.get('/dogsName/:id', dogController.getDogName)
-app.get('/dogsColor/:color', dogController.getDogColor)
+app.get('/users/:id', UserController.getUserById)
+app.get('/posts/:id', PostController.getPostById)
+app.get('/comments/:id', CommentController.getCommentById)
 
 //CREATE POST
-app.post('/brands', BrandController.createBrand)
-app.post('/bicycles', BicycleController.createBicycle)
-app.post('/bells', BellController.createBell)
+app.post('/users', UserController.createUser)
+app.post('/posts', PostController.createPost)
+app.post('/comments', CommentController.createComment)
 
 //UPDATE PUT
-app.put('/brands/:id', BrandController.updateBrand)
-app.put('/bicycles/:id', BicycleController.updateBicycle)
-app.put('/bells/:id', BellController.updateBell)
+app.put('/users/:id', UserController.updateUser)
+app.put('/posts/:id', PostController.updatePost)
+app.put('/comments/:id', CommentController.updateComment)
 
 //DELETE
-app.delete('/brands/:id', BrandController.deleteBrand)
-app.delete('/bicycles/:id', BicycleController.deleteBicycle)
-app.delete('/bells/:id', BellController.deleteBell)
+app.delete('/users/:id', UserController.deleteUser)
+app.delete('/posts/:id', PostController.deletePost)
+app.delete('/comments/:id', CommentController.deleteComment)
 
 
 //DEFAULT

@@ -6,8 +6,8 @@ const CommentSchema = new Schema(
     {
         user_id: { type: Schema.Types.ObjectId, ref: 'user_id' },
         post_id: { type: Schema.Types.ObjectId, ref: 'post_id' },
+        created_at: { type: Date, required: true, default: Date.now },
         content: { type: String, required: true },
-        date: { type: Date, required: true },
         likes: { type: Number, required: true },
         //array of users who liked it
     },
