@@ -34,7 +34,7 @@ app.get('/comments/:id', CommentController.getCommentById)
 //CREATE POST
 app.post('/users', UserController.createUser)
 app.post('/posts', PostController.createPost)
-app.post('/posts', PostController.createPost)
+app.post('/comments', CommentController.createComment)
 
 //UPDATE PUT
 app.put('/users/:id', UserController.updateUser)
