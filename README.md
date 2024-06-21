@@ -39,5 +39,3 @@ Entity relationship Diagram (backend):
 
 Trello project: https://trello.com/b/kXzXRxpJ
 
-
-
