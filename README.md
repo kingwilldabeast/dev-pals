@@ -35,7 +35,11 @@ Technologies used:
 
 Component Hierarchy Diagram (frontend):
 
+![Component Hierarchy Diagram](planning_materials/component-hierarchy.png) 
+
 Entity relationship Diagram (backend):
+
+![Entity Relationship Diagram](planning_materials/ERD.png)
 
 Trello project: https://trello.com/b/kXzXRxpJ
 
