@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import '../App.css'
 import axios from 'axios'
 
@@ -12,20 +12,45 @@ const initialState = {
 };
 
 const [formState, setFormState]=useState(initialState);
+const [users, setUsers]=useState([]);
+// const [duplicateUser, setDuplicateUser]=useState(false);
+// const [emails, setEmails]=useState([]);
 
+const getUsers = async () => {
+  const response = await axios.get(`http://localhost:3001/users`)
+  setUsers(response.data)
+  // console.log(response.data)
+}
+
+useEffect(() => {
+  getUsers()
+}, []) 
 
 const handleSubmit =(e) => {
 
   e.preventDefault()
+
+  let isDuplicate=false
+
   setFormState(initialState)
   // setFormState(initialState)
-  if(formState.password === formState.passwordConfirm){
-    setFormState ({...formState, valid:true})
-  }else{
-    setFormState({...formState, valid:false})
-  }
+ 
+  {users.map((user) => {
+    if (user.username === formState.username){
+    isDuplicate =true
+} 
+    console.log(user.username)
+  
+})}
+isDuplicate ? console.log('username already exists') : console.log('username is available')
+
+  // if(formState.password === formState.passwordConfirm){
+  //   setFormState ({...formState, valid:true})
+  // }else{
+  //   setFormState({...formState, valid:false})
+  // }
     
-    console.log(formState)
+    // console.log(formState)
     // setFormState(initialState)
   }
     
