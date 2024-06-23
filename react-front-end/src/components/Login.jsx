@@ -11,19 +11,21 @@ export default function Login () {
         <div className="loginContainer">
         {/* Email */}
         <div className="emailContainer">
-          <input placeholder="youremail@email.com" />
+          <input type="text" id="email" placeholder="Email or User Name" />
         </div>
         {/* Password */}
         <div className="passwordContainer">
-          <input  placeholder="Enter your password" />
+          <input type="text" id="password" placeholder="Enter your password" />
         </div>
         {/* Submit Button */}
-        <div className="submitBtn">
-          <button type="submit">Login</button>
+        <div className="submitBtnContainer">
+          <button className="submitBtn" type="submit">Log in</button>
         </div>
         {/* Links */}
-        <div>
-          <Link to='/signup'>Signup</Link>
+        <div className="signupContainer">
+          <hr/> 
+          <h4>Need an account</h4>
+          <button><Link className="signupBtn" to='/signup'>Sign up</Link></button>
           {/* <Link to='/UserProfile'>User Profile</Link> */}
         </div>
         

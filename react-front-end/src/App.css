@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -5,7 +7,7 @@
   text-align: center;
 }
 body {
-  background-color: #cfcfcf;
+  background-color: #1500ff;
 }
 
 /* LOGIN STYLES */
@@ -13,21 +15,80 @@ body {
   display: flex;
 }
 .titleContainer {
-
+  margin-right:200px
+}
+.titleContainer h1 {
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  font-size: 5rem;
+  margin: 100px 0 0 0;
+}
+.titleContainer p {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 1.5rem;
+  margin-top: 0;
 }
 .loginContainer {
-  background-color: rgb(232, 232, 232);
-  padding: 10px 30px;
+  background-color: #e8e8e8;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px #0000008a;
 }
-.emailContainer {
-  margin: 0 0 20px 0;
+.emailContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 80%;
+  color: #000;
 }
-.passwordContainer {
-
+.passwordContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 80%;
+  color: #000;
 }
 .emailContainer , .passwordContainer, input {
   font-size: 17px;
-  padding: 4px 16px;
+  padding: 10px 5px;
   border-radius: 3px;
   outline: none;
+}
+input {
+  background-color: #e8e8e8;
+  border: 2px solid blue;
+}
+button.submitBtn {
+  font-family: "Share Tech Mono", monospace;
+  background-color: blue;
+  width: 80%;
+  margin-top: 10px;
+  border-radius: 5px;
+  outline: none;
+}
+button.submitBtn:focus {
+  outline: none;
+}
+button.submitBtn:hover {
+  background-color: #0084ff;
+}
+.signupContainer, h4{
+  font-family: "Share Tech Mono", monospace;
+  color:rgb(79, 79, 79);
+  margin: 0;
+}
+hr {
+  margin: 30px 0 0 0;
+}
+.signupContainer button {
+  font-family: "Share Tech Mono", monospace;
+  background-color: blue;
+  width: 50%;
+  margin-top: 10px;
+}
+.signupContainer button:hover {
+  background-color: #0084ff;
+}
+.signupContainer button:focus {
+  outline: none;
+}
+.signupBtn {
+  color: #FFF;
 }
