@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import LoggedInUserContext from '../LoggedInUserContext'
+
 
 
 export default function Login () {
@@ -13,6 +15,7 @@ export default function Login () {
   const [formState, setFormState] = useState(initialState)
   const [users, setUsers] = useState([])
   const navigate = useNavigate()
+  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext)
 
   const getUsers = async () => {
     try {
@@ -27,6 +30,19 @@ export default function Login () {
   useEffect(() => {
     getUsers()
   }, [])
+
+  const getData = async (username) => {
+    try {
+      
+      const response = await axios.get(`http://localhost:3001/users/usernames/${username}`)
+      console.log(`users are ${response.data}`)
+      
+      //assign API results to array
+      setLoggedInUser(response.data)
+    } catch (error) {
+      console.error("Error fetching data:", error)
+    }
+  }
 
 
   const handleSubmit = (e) => {

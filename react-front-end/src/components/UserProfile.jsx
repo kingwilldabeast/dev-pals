@@ -30,25 +30,25 @@ export default function UserProfile () {
     }
     getLoggedInUser()
 
-    // const getUserPosts = async () => {
-    //   const postsResponse = await axios.get(`http://localhost:3001/userPosts/${username}`)
-    //   const userPosts = postsResponse.data
-    //   setPosts(userPosts)
+    const getUserPosts = async () => {
+      const postsResponse = await axios.get(`http://localhost:3001/userPosts/${username}`)
+      const userPosts = postsResponse.data
+      setPosts(userPosts)
 
-    //   userPosts.forEach(post => getPostComments(post._id))
-    // }
-    // getUserPosts()
+      userPosts.forEach(post => getPostComments(post._id))
+    }
+    getUserPosts()
 
-    // const getPostComments = async (postId) => {
-    //   const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
-    //   const comments = commentsResponse.data
-    //   // Had trouble with state here, and got a solution from ChatGPT. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
-    //   setPostComments(prevState => ({
-    //     ...prevState,
-    //     [postId]: comments
-    //   }))
-    // }
-    // getPostComments()
+    const getPostComments = async (postId) => {
+      const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
+      const comments = commentsResponse.data
+      // Had trouble with state here, and got a solution from ChatGPT. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
+      setPostComments(prevState => ({
+        ...prevState,
+        [postId]: comments
+      }))
+    }
+    getPostComments()
   }, [username])
 
   const createNewPost = async (content) => {
@@ -102,7 +102,7 @@ export default function UserProfile () {
       </div>
       <form className='createPost' onSubmit={handleSubmitPost}>
         <input 
-          type="text"
+          type="textarea"
           value={postText} 
           onChange={(e) => setPostText(e.target.value)}
           placeholder='Write your next post here'

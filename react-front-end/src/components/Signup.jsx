@@ -96,8 +96,8 @@ const handleSubmit =(e) => {
         
         console.log(`users are ${response.data}`)
         if (response.status === 201) {
-          navigate(`/userProfile/${response.data._id}`)
-          // navigate(`/username/${formState.username}`)
+          // navigate(`/userProfile/${response.data._id}`)
+          navigate(`/username/${formState.username}`)
             // const newEvent = await response.json();
             console.log("account created");
         } else {
