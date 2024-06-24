@@ -36,11 +36,18 @@ export default function Header () {
 
   }
 
+  const openEditor = (e) => {
+    navigate(`/username/edit/${loggedInUser.username}`);
+  }
+
   useEffect(() => {
     if (profile) {
       navigate(`/username/${profile.username}`);
     }
   }, [profile, navigate]);
+
+
+
   return (
     <div className="" >
           <h1>Header</h1>
@@ -55,6 +62,7 @@ export default function Header () {
             />
             <button>Find profile</button>
           </form>
+          <button onClick={openEditor}>Edit user info</button>
       <p>{`${loggedInUser.username} is logged in`}</p>
     </div>
   )
