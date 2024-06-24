@@ -28,8 +28,9 @@ app.get('/posts', PostController.getAllPosts)
 app.get('/comments', CommentController.getAllComments)
 
 app.get('/users/:id', UserController.getUserById)
+app.get('/users/usernames/:username', UserController.getUserByUsername)
 app.get('/posts/:id', PostController.getPostById)
-app.get('/userPosts/:id', PostController.getPostsByUserId)
+app.get('/userPosts/:username', PostController.getPostsByUsername)
 app.get('/comments/:id', CommentController.getCommentById)
 app.get('/postComments/:postId', CommentController.getCommentsByPostId)
 
@@ -42,6 +43,7 @@ app.post('/comments', CommentController.createComment)
 app.put('/users/:id', UserController.updateUser)
 app.put('/posts/:id', PostController.updatePost)
 app.put('/comments/:id', CommentController.updateComment)
+app.put('/users/:userId/likes/:postId', UserController.toggleLikePost)
 
 //DELETE
 app.delete('/users/:id', UserController.deleteUser)
