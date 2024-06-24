@@ -1,42 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  background-color: #1500ff;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* LOGIN STYLES */
+.welcomeContainer {
+  display: flex;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.titleContainer {
+  margin-right:200px
 }
-
-.card {
-  padding: 2em;
+.titleContainer h1 {
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  font-size: 5rem;
+  margin: 100px 0 0 0;
 }
+.titleContainer p {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 1.5rem;
+  margin-top: 0;
+}
+.loginContainer {
+  background-color: #e8e8e8;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px #0000008a;
+}
+.emailContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 80%;
+  color: #000;
+}
+.passwordContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 80%;
+  color: #000;
+}
+.emailContainer , .passwordContainer, input {
+  font-size: 17px;
+  padding: 10px 5px;
+  border-radius: 3px;
+  outline: none;
+}
+input {
+  background-color: #e8e8e8;
+  border: 2px solid blue;
+}
+button.submitBtn {
+  font-family: "Share Tech Mono", monospace;
+  background-color: blue;
+  width: 80%;
+  margin-top: 10px;
+  border-radius: 5px;
+  outline: none;
+}
+button.submitBtn:focus {
+  outline: none;
+}
+button.submitBtn:hover {
+  background-color: #0084ff;
+}
+.signupContainer, h4{
+  font-family: "Share Tech Mono", monospace;
+  color:rgb(79, 79, 79);
+  margin: 0;
+}
+hr {
+  margin: 30px 0 0 0;
+}
+.signupContainer button {
+  font-family: "Share Tech Mono", monospace;
+  background-color: blue;
+  width: 50%;
+  margin-top: 10px;
+}
+.signupContainer button:hover {
+  background-color: #0084ff;
+}
+.signupContainer button:focus {
+  outline: none;
+}
+.signupBtn {
+  color: #FFF;
+}
+/* sign-up */
 
-.read-the-docs {
-  color: #888;
+.signupContainer {
+  background-color: #e8e8e8;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px #0000008a; 
+}
+.usernameContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 80%;
+  color: #000;
+}
+.confirm-passwordContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 80%;
+  color: #000;
+}
+.usernameContainer , .confirm-passwordContainer, input {
+  font-size: 17px;
+  padding: 10px 5px;
+  border-radius: 3px;
+  outline: none;
 }
