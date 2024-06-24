@@ -7,45 +7,53 @@ import axios from 'axios'
 export default function UserProfile () {
   
   const [viewedUser, setViewedUser] = useState({})
+  const [activeUser, setactiveUser] = useState({})
   const [posts, setPosts] = useState([])
   const [postText, setPostText] = useState('')
   const [postComments, setPostComments] = useState({})
-  const { userId } = useParams()
+  const { username } = useParams()
   const { loggedInUser } = useContext(LoggedInUserContext)
 
   useEffect(() => {
 
-    const getUser = async () => {
-      const viewedUserResponse = await axios.get(`http://localhost:3001/users/${userId}`)
+    const getViewedUser = async () => {
+      const viewedUserResponse = await axios.get(`http://localhost:3001/users/usernames/${username}`)
       const viewedUserData = viewedUserResponse.data
       setViewedUser(viewedUserData)
     }
-    getUser()
+    getViewedUser()
 
-    const getUserPosts = async () => {
-      const postsResponse = await axios.get(`http://localhost:3001/userPosts/${userId}`)
-      const userPosts = postsResponse.data
-      setPosts(userPosts)
-
-      userPosts.forEach(post => getPostComments(post._id))
+    const getLoggedInUser = async () => {
+      const loggedInUserResponse = await axios.get(`http://localhost:3001/users/${loggedInUser}`)
+      const loggedInUserData = loggedInUserResponse.data
+      setactiveUser(loggedInUserData)
     }
-    getUserPosts()
+    getLoggedInUser()
 
-    const getPostComments = async (postId) => {
-      const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
-      const comments = commentsResponse.data
-      // Had trouble with state here. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
-      setPostComments(prevState => ({
-        ...prevState,
-        [postId]: comments
-      }))
-    }
-    getPostComments()
-  }, [userId])
+    // const getUserPosts = async () => {
+    //   const postsResponse = await axios.get(`http://localhost:3001/userPosts/${username}`)
+    //   const userPosts = postsResponse.data
+    //   setPosts(userPosts)
+
+    //   userPosts.forEach(post => getPostComments(post._id))
+    // }
+    // getUserPosts()
+
+    // const getPostComments = async (postId) => {
+    //   const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
+    //   const comments = commentsResponse.data
+    //   // Had trouble with state here, and got a solution from ChatGPT. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
+    //   setPostComments(prevState => ({
+    //     ...prevState,
+    //     [postId]: comments
+    //   }))
+    // }
+    // getPostComments()
+  }, [username])
 
   const createNewPost = async (content) => {
     const newPost = {
-      user_id: loggedInUser._id, 
+      user_id: activeUser._id, 
       content: content,
       created_at: new Date(),
       likes: 0
@@ -66,19 +74,21 @@ export default function UserProfile () {
     setPosts(posts.filter(post => post._id !== postId))
   }
 
-  const handleAddLike = async (postId) => {
-    try {
-      const post = posts.find(post => post._id === postId)
-      const isLikedByUser = post.likes > 0
+  const handleToggleLike = async (postId) => {
+    const response = await axios.put(`http://localhost:3001/users/${activeUser._id}/likes/${postId}`)
+    const updatedPost = response.data
+
+    // I need to update the local state of posts to reflect the new amount of likes
+    // Had to get help with this line. I didn't realize that you could use .map insie of your setter function, so that is really helpful to know. This is now a more robust way of ensuring that we are selecting the correct post._id in our posts array, and updating it to the new status after our put request has been made.
+    setPosts(posts.map(post => 
+      post._id === postId ? updatedPost : post
+    ))
   
-      const operation = isLikedByUser ? 'unlike' : 'like'
-      const response = await axios.put(`http://localhost:3001/posts/${postId}/${operation}`)
-  
-      const updatedPost = response.data
-  
-      setPosts(posts.map(post => post._id === postId ? updatedPost : post))
-    } catch (error) {
-      console.error("Error liking/unliking the post:", error)
+    // I need to update the likedPosts of the activeUser in the local state
+    if (activeUser.likedPosts.includes(postId)) {
+      activeUser.likedPosts = activeUser.likedPosts.filter(id => id !== postId)
+    } else {
+      activeUser.likedPosts.push(postId)
     }
   }
   
@@ -102,20 +112,20 @@ export default function UserProfile () {
       <div className='posts'>
         {posts.map(post => (
             <div className='post' key={post._id}>
-              <h4>{new Date(post.created_at).toLocaleString()}</h4>
-              <h4>{post.content}</h4>
-              <h4>Likes: {post.likes}</h4>
-              <button className='likePostButton' onClick={() => handleAddLike(post._id)}>Like</button>
+              <h4 className='postData'>{new Date(post.created_at).toLocaleString()}</h4>
+              <h4 className='postContent'>{post.content}</h4>
+              <h4 className='postLikes'>Likes: {post.likes}</h4>
+              <button className='likePostButton' onClick={() => handleToggleLike(post._id)}>Like</button>
               {/* <button className='editPostButton'>Edit</button> */}
               <button className='removePostButton' onClick={() => handleRemovePost(post._id)}>Remove</button>
               <div className='comments'>
               {postComments[post._id]?.map(comment => (
                 <div className='comment' key={comment._id}>
-                  {/* <img src={comment.user_id.profilePicURL}/> */}
-                  <p>{`${comment.user_id.firstname} ${comment.user_id.lastname}`}</p>
-                  <p>{comment.content}</p>
-                  <p>{new Date(comment.created_at).toLocaleString()}</p>
-                  <p>Likes: {comment.likes}</p>
+                  {/* <img className='commentUserImg' src={comment.user_id.profilePicURL}/> */}
+                  <p className='commentUsername'>{`${comment.user_id.firstname} ${comment.user_id.lastname}`}</p>
+                  <p className='commentContent'>{comment.content}</p>
+                  <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
+                  <p className='commentLikes'>Likes: {comment.likes}</p>
                 </div>
               ))}
             </div>
