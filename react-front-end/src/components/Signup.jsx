@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import '../App.css'
 import axios from 'axios'
+//  const { loggedInUser } = useContext(LoggedInUserContext)
 
 export default function Signup () {
 const initialState = {
@@ -14,6 +15,11 @@ const initialState = {
 const [formState, setFormState]=useState(initialState);
 const [users, setUsers]=useState([]);
 const [emails, setEmails]=useState([]);
+const [message, setMessage]=useState('')
+const [success, setSuccess] = useState(false)
+const [failure, setFailure] = useState(false)
+
+// const { loggedInUser } = useContext(LoggedInUserContext)
 // const [duplicateUser, setDuplicateUser]=useState(false);
 // const [emails, setEmails]=useState([]);
 
@@ -32,33 +38,72 @@ getUsers()
 
 
 const handleSubmit =(e) => {
-
   e.preventDefault()
 
   let isDuplicate=false
 
-  setFormState(initialState)
-  // setFormState(initialState)
- 
-  {users.map((user) => {
-    if (user.username === formState.username || user.email === formState.email ){
-    isDuplicate =true
-} 
-    console.log(user.username)
+    console.log(formState)
+    if (formState.password !== formState.passwordConfirm) {
+      setMessage("Passwords do not match")
+      setFailure(true)
+    } else if (formState.password.length < 7) {
+      setMessage("Passwords match but are too short")
+      setFailure(true)
+    }
+    else {
+      {users.map((user) => {
+        if (user.username === formState.username || user.email === formState.email ){
+            isDuplicate =true
+        } 
+            // console.log(user.username)
+          
+        })}
+    
+          if (isDuplicate == true ) {
+            setMessage("username or email already exists") 
+            setFailure(true)
+          } else {
+            formState.valid = true
+            console.log(formState)
+            setSuccess(true)
+            setMessage("Account created!")
+            setFormState(initialState) //wipe and reset 
+            addNewAccount()
+    
+          }
+      };
+    }
+   
   
-})}
-isDuplicate ? console.log('username or email already exists') : console.log('username and email are available')
 
-// {emails.map((email) => {
-//   if (email.email === formState.email){
-//   isDuplicate =true
-// } 
-//   console.log(email.email)
 
-// })}
-// isDuplicate ? console.log('email already exists') : console.log('email is available')
 
-  };
+
+
+  const addNewAccount = async () => {
+  
+    try {
+      const response = await axios.post("http://localhost:3001/users", {
+        username: formState.username,
+        password: formState.password,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+        
+        console.log(`users are ${response.data}`)
+        if (response.status === 201) {
+            // const newEvent = await response.json();
+            console.log("account created");
+        } else {
+            console.error("Failed to add account:", response.statusText);
+        }
+    } catch (error) {
+      console.error("Error:", error)
+    }
+  
+  }
   
     
   const handleChange=(e) => {
@@ -111,7 +156,9 @@ isDuplicate ? console.log('username or email already exists') : console.log('use
         />
         </div>
     <button type="submit">Sign Up</button>
-    {formState.valid === false && (<p>Passwords must match.</p>)}
+    <p className={success ? 'valid' : (failure ? 'invalid' : null)} >
+        {message}
+        </p>
       </form>
   </div>
     
