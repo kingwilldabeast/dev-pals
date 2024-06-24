@@ -22,11 +22,13 @@ body {
   text-transform: uppercase;
   font-size: 5rem;
   margin: 100px 0 0 0;
+  color: #ffb703;
 }
 .titleContainer p {
   font-family: "Share Tech Mono", monospace;
   font-size: 1.5rem;
   margin-top: 0;
+  color: #fb8500;
 }
 .loginContainer {
   background-color: #e8e8e8;
@@ -69,7 +71,7 @@ button.submitBtn:focus {
 button.submitBtn:hover {
   background-color: #0084ff;
 }
-.signupContainer, h4{
+.signupBtnContainer, h4{
   font-family: "Share Tech Mono", monospace;
   color:rgb(79, 79, 79);
   margin: 0;
@@ -77,16 +79,16 @@ button.submitBtn:hover {
 hr {
   margin: 30px 0 0 0;
 }
-.signupContainer button {
+.signupBtnContainer button {
   font-family: "Share Tech Mono", monospace;
   background-color: blue;
   width: 50%;
   margin-top: 10px;
 }
-.signupContainer button:hover {
+.signupBtnContainer button:hover {
   background-color: #0084ff;
 }
-.signupContainer button:focus {
+.signupBtnContainer button:focus {
   outline: none;
 }
 .signupBtn {
