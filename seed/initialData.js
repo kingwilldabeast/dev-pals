@@ -27,6 +27,7 @@ const main = async () => {
 
   const user1 = await new User({
     username: 'tomfrommyspace',
+    email: 'tomsmith@gmail.com',
     password: '123456',
     firstname: 'Tom',
     lastname: "Smith",
@@ -38,6 +39,7 @@ const main = async () => {
 
   const user2 = await new User({
     username: 'billyboy',
+    email: 'johnsonbill@gmail.com',
     password: '123456',
     firstname: 'Bill',
     lastname: "Johnson",
