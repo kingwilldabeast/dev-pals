@@ -52,8 +52,8 @@ export default function Login () {
       return
     }
     // console.log('Welcome User')
-    navigate('/userProfile/:userId')
-    // navigate(`/username/${formState.username}`)
+    // navigate('/userProfile/:userId')
+    navigate(`/username/${formState.username}`)
   }
   
   const handleChange = (e) => {
