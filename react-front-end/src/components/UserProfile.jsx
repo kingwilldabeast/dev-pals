@@ -86,9 +86,9 @@ export default function UserProfile () {
     <div className='userProfile'>
       <Header/>
       <div className='aboutUser'>
-        <h1>About {viewedUser.firstname}</h1>
-        <h2>{viewedUser.age} Years Old</h2>
-        <h2>Lives in {viewedUser.location}</h2>
+        <h2>About {viewedUser.firstname}</h2>
+        <h3>{viewedUser.age} Years Old</h3>
+        <h3>Lives in {viewedUser.location}</h3>
       </div>
       <form className='createPost' onSubmit={handleSubmitPost}>
         <input 
