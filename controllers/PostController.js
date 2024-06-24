@@ -1,7 +1,7 @@
 
     
 //ASYNC versions, if using mongoose
-const {Post} = require('../models'); //with models/index.js file
+const {Post, User} = require('../models'); //with models/index.js file
 //const Post = require('../models/Post'); //without models/index.js file
 
 //Read
@@ -34,11 +34,17 @@ const getPostById = async (req, res) => {
 const getPostsByUsername = async (req, res) => {
     try {
         const { username } = req.params
-        const userPosts = await Post.find({ user_id: username })
+        const user = await User.findOne({ username: username })
+
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+
+        const userPosts = await Post.find({ user_id: user._id })
         if (userPosts.length > 0) {
             return res.status(200).json(userPosts)
         }
-        return res.status(404).send(`No posts found for user with ID: ${id}`)
+        return res.status(404).send(`No posts found for user with username: ${username}`)
     } catch (error) {
         return res.status(500).send(error.message)
     }
