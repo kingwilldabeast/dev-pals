@@ -9,7 +9,7 @@ import LoggedInUserContext from './LoggedInUserContext'
 
 function App() {
 
-  const [loggedInUser, setLoggedInUser] = useState('')
+  const [loggedInUser, setLoggedInUser] = useState('66779b976f742d445e0b75d8')
 
   return (
     <>
@@ -17,7 +17,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Login/>}/>
           <Route path="/signup" element={<Signup/>}/>
-          <Route path="/userProfile/:userId" element={<UserProfile/>}/>
+          <Route path="/username/:username" element={<UserProfile/>}/>
+          {/* <Route path="/userProfile/:userId" element={<UserProfile/>}/> */}
           {/* <Route path="/userProfile/:userId/friends" element={<FriendsList/>}/> */}
         </Routes>
       </LoggedInUserContext.Provider>

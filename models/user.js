@@ -6,13 +6,14 @@ const UserSchema = new Schema(
     {
         username: {type: String, required: true},
         password: {type: String, required: true},
-        firstname: {type: String, required: true},
-        lastname: {type: String, required: true},
-        age: {type: String, required: true},
+        firstname: {type: String},
+        lastname: {type: String},
+        age: {type: String},
         //DOB 
         //array of skills 
-        location: {type: String, required: true},
-        profilePicURL: {type: String}
+        location: {type: String},
+        profilePicURL: {type: String},
+        likedPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }]
     },
     {timestamps: true}
 

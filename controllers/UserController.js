@@ -1,7 +1,7 @@
 
     
 //ASYNC versions, if using mongoose
-const {User} = require('../models'); //with models/index.js file
+const {User, Post} = require('../models'); //with models/index.js file
 //const User = require('../models/User'); //without models/index.js file
 
 //Read
@@ -19,6 +19,23 @@ const getUserById = async (req, res) => {
     try {
         const { id } = req.params
         const singleObject = await User.findById(id)
+        if (singleObject) {
+            return res.json(singleObject)
+        }
+        return res.status(404).send(`that User doesn't exist`)
+    } catch (error) {
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+            return res.status(404).send(`That User doesn't exist`)
+        }
+        return res.status(500).send(error.message);
+    }
+}
+
+const getUserByUsername = async (req, res) => {
+    const { username } = req.params
+    const regex = new RegExp(username, 'i');
+    try {
+        const singleObject = await User.findOne({username: { $regex: regex }})
         if (singleObject) {
             return res.json(singleObject)
         }
@@ -81,10 +98,46 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const toggleLikePost = async (req, res) => {
+    try {
+        const { userId, postId } = req.params
+
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+
+        const post = await Post.findById(postId)
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' })
+        }
+
+        // Was trying to do this a much more complicated way with .find, and asked ChatGpt how it would handle this request. It gave me this includes method which is so nice and simple. includes is a JavaScript array method that checks if a certain value exists in an array. It returns true if the value exists in the array and false otherwise
+        const hasLiked = user.likedPosts.includes(postId)
+
+        if (hasLiked) {
+            user.likedPosts.pull(postId)
+            post.likes -= 1
+        } else {
+            user.likedPosts.push(postId)
+            post.likes += 1
+        }
+
+        await user.save()
+        await post.save()
+
+        res.status(200).json(post)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
 module.exports = {
     getAllUsers, 
     getUserById, 
     createUser, 
     updateUser, 
     deleteUser,
+    toggleLikePost,
+    getUserByUsername
 }
