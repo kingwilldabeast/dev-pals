@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -12,12 +12,13 @@ export default function Login () {
 
   const [formState, setFormState] = useState(initialState)
   const [users, setUsers] = useState([])
+  const navigate = useNavigate()
 
   const getUsers = async () => {
     try {
       const response = await axios.get(`http://localhost:3001/users`)
       setUsers(response.data)
-      console.log(response.data)
+      // console.log(response.data)
     } catch (error) {
       console.error('user does not exixt', error)
     }
@@ -50,8 +51,9 @@ export default function Login () {
       })
       return
     }
-    // setFormState(initialState)
-    console.log('Welcome User')
+    // console.log('Welcome User')
+    navigate('/userProfile/:userId')
+    // navigate(`/username/${formState.username}`)
   }
   
   const handleChange = (e) => {
