@@ -31,6 +31,20 @@ const getCommentById = async (req, res) => {
     }
 }
 
+const getCommentsByPostId = async (req, res) => {
+    try {
+        const { postId } = req.params
+        // I was getting confused about the multiple api calls I was having to make in order to obtain information from both the CommentSchema and UserSchema. ChatGPT recommended this populate method, which replaces the user_id with only the fields that we want from the user_id for our comment divs. This makes for 1 less api call, increased performance and less headaches. Definitely a good method to remember.
+        const comments = await Comment.find({ post_id: postId }).populate('user_id', 'firstname lastname')
+        if (comments.length > 0) {
+            return res.status(200).json(comments)
+        }
+        return res.status(404).send(`No comments found for post with ID: ${postId}`)
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
 //create
 const createComment = async (req, res) => {
     try {
@@ -84,6 +98,7 @@ const deleteComment = async (req, res) => {
 module.exports = {
     getAllComments, 
     getCommentById, 
+    getCommentsByPostId,
     createComment, 
     updateComment, 
     deleteComment,
