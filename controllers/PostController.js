@@ -31,10 +31,10 @@ const getPostById = async (req, res) => {
     }
 }
 
-const getPostsByUserId = async (req, res) => {
+const getPostsByUsername = async (req, res) => {
     try {
-        const { id } = req.params
-        const userPosts = await Post.find({ user_id: id })
+        const { username } = req.params
+        const userPosts = await Post.find({ user_id: username })
         if (userPosts.length > 0) {
             return res.status(200).json(userPosts)
         }
@@ -97,7 +97,7 @@ const deletePost = async (req, res) => {
 module.exports = {
     getAllPosts, 
     getPostById,
-    getPostsByUserId,
+    getPostsByUsername,
     createPost, 
     updatePost, 
     deletePost,

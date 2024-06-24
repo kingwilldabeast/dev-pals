@@ -10,6 +10,9 @@ const UserSchema = new Schema(
         firstname: {type: String},
         lastname: {type: String},
         age: {type: String},
+        firstname: {type: String},
+        lastname: {type: String},
+        age: {type: String},
         //DOB 
         //array of skills 
         location: {type: String},

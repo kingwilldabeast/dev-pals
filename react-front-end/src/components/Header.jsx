@@ -1,14 +1,12 @@
 import { useNavigate } from "react-router-dom"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
-
-// import Nav from './Nav'
-
 
 export default function Header () {
   let navigate = useNavigate()
 
-
+  const {loggedInUser, setLoggedInUser} = useContext(LoggedInUserContext)
   const [inputInProgress, setInputInProgress] = useState({ searchBar: '' });
   const [profile, setProfile] = useState('');
 
@@ -23,21 +21,28 @@ export default function Header () {
     const searchTerm = inputInProgress.searchBar;
     setInputInProgress({searchBar:''})
     getData(searchTerm)
-    navigate(`/userProfile/${profile._id}`)
   }
-
   const getData = async (searchTerm) => {
-    const response = await axios.get(`http://localhost:3001/users/${searchTerm}`)
-    console.log(`users are ${response.data}`)
-    
-    //assign API results to array
-    setProfile(response.data)
+    try {
+      
+      const response = await axios.get(`http://localhost:3001/users/usernames/${searchTerm}`)
+      console.log(`users are ${response.data}`)
+      
+      //assign API results to array
+      setProfile(response.data)
+    } catch (error) {
+      console.error("Error fetching data:", error)
+    }
 
   }
 
-
+  useEffect(() => {
+    if (profile) {
+      navigate(`/username/${profile.username}`);
+    }
+  }, [profile, navigate]);
   return (
-    <div>
+    <div className="" >
           <h1>Header</h1>
           <form onSubmit={handleSubmit}>
             <input
@@ -50,9 +55,7 @@ export default function Header () {
             />
             <button>Find profile</button>
           </form>
-      <p>{`${profile.username} is logged in`}</p>
-      {/* <Nav/> */}
+      <p>{`${loggedInUser.username} is logged in`}</p>
     </div>
   )
 }
-
