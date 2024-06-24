@@ -4,7 +4,7 @@ const { Schema } = require('mongoose')
 
 const PostSchema = new Schema(
     {
-        user_id: { type: Schema.Types.ObjectId, ref: 'user_id' },
+        user_id: { type: Schema.Types.ObjectId, ref: 'User' },
         created_at: { type: Date, required: true, default: Date.now },
         content: { type: String, required: true },
         likes: { type: Number, required: true },

@@ -30,18 +30,18 @@ export default function UserProfile () {
       userPosts.forEach(post => getPostComments(post._id))
     }
     getUserPosts()
-  }, [userId])
 
-  const getPostComments = async (postId) => {
-    const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
-    const comments = commentsResponse.data
-    // Had trouble with state here. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
-    setPostComments(prevState => ({
-      ...prevState,
-      [postId]: comments
-    }))
-  }
-  getPostComments()
+    const getPostComments = async (postId) => {
+      const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
+      const comments = commentsResponse.data
+      // Had trouble with state here. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
+      setPostComments(prevState => ({
+        ...prevState,
+        [postId]: comments
+      }))
+    }
+    getPostComments()
+  }, [userId])
 
   const createNewPost = async (content) => {
     const newPost = {
@@ -55,10 +55,31 @@ export default function UserProfile () {
     setPosts([response.data.newObject, ...posts])
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmitPost = (e) => {
     e.preventDefault()
     createNewPost(postText)
     setPostText('')
+  }
+
+  const handleRemovePost = async (postId) => {
+    await axios.delete(`http://localhost:3001/posts/${postId}`)
+    setPosts(posts.filter(post => post._id !== postId))
+  }
+
+  const handleAddLike = async (postId) => {
+    try {
+      const post = posts.find(post => post._id === postId)
+      const isLikedByUser = post.likes > 0
+  
+      const operation = isLikedByUser ? 'unlike' : 'like'
+      const response = await axios.put(`http://localhost:3001/posts/${postId}/${operation}`)
+  
+      const updatedPost = response.data
+  
+      setPosts(posts.map(post => post._id === postId ? updatedPost : post))
+    } catch (error) {
+      console.error("Error liking/unliking the post:", error)
+    }
   }
   
   return (
@@ -69,7 +90,7 @@ export default function UserProfile () {
         <h2>{viewedUser.age} Years Old</h2>
         <h2>Lives in {viewedUser.location}</h2>
       </div>
-      <form className='createPost' onSubmit={handleSubmit}>
+      <form className='createPost' onSubmit={handleSubmitPost}>
         <input 
           type="text"
           value={postText} 
@@ -81,11 +102,12 @@ export default function UserProfile () {
       <div className='posts'>
         {posts.map(post => (
             <div className='post' key={post._id}>
-              <p>{new Date(post.created_at).toLocaleString()}</p>
-              <p>{post.content}</p>
-              <p>Likes: {post.likes}</p>
-              <button className='editPostButton'>Edit</button>
-              <button className='removePostButton'>Remove</button>
+              <h4>{new Date(post.created_at).toLocaleString()}</h4>
+              <h4>{post.content}</h4>
+              <h4>Likes: {post.likes}</h4>
+              <button className='likePostButton' onClick={() => handleAddLike(post._id)}>Like</button>
+              {/* <button className='editPostButton'>Edit</button> */}
+              <button className='removePostButton' onClick={() => handleRemovePost(post._id)}>Remove</button>
               <div className='comments'>
               {postComments[post._id]?.map(comment => (
                 <div className='comment' key={comment._id}>
