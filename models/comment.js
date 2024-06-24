@@ -4,8 +4,8 @@ const { Schema } = require('mongoose')
 
 const CommentSchema = new Schema(
     {
-        user_id: { type: Schema.Types.ObjectId, ref: 'user_id' },
-        post_id: { type: Schema.Types.ObjectId, ref: 'post_id' },
+        user_id: { type: Schema.Types.ObjectId, ref: 'User' },
+        post_id: { type: Schema.Types.ObjectId, ref: 'Post' },
         created_at: { type: Date, required: true, default: Date.now },
         content: { type: String, required: true },
         likes: { type: Number, required: true },

@@ -29,7 +29,9 @@ app.get('/comments', CommentController.getAllComments)
 
 app.get('/users/:id', UserController.getUserById)
 app.get('/posts/:id', PostController.getPostById)
+app.get('/userPosts/:id', PostController.getPostsByUserId)
 app.get('/comments/:id', CommentController.getCommentById)
+app.get('/postComments/:postId', CommentController.getCommentsByPostId)
 
 //CREATE POST
 app.post('/users', UserController.createUser)

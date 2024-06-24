@@ -13,18 +13,23 @@ const initialState = {
 
 const [formState, setFormState]=useState(initialState);
 const [users, setUsers]=useState([]);
+const [emails, setEmails]=useState([]);
 // const [duplicateUser, setDuplicateUser]=useState(false);
 // const [emails, setEmails]=useState([]);
 
 const getUsers = async () => {
   const response = await axios.get(`http://localhost:3001/users`)
   setUsers(response.data)
+  setEmails(response.data)
   // console.log(response.data)
 }
 
 useEffect(() => {
-  getUsers()
+  
+getUsers()
 }, []) 
+
+
 
 const handleSubmit =(e) => {
 
@@ -36,27 +41,32 @@ const handleSubmit =(e) => {
   // setFormState(initialState)
  
   {users.map((user) => {
-    if (user.username === formState.username){
+    if (user.username === formState.username || user.email === formState.email ){
     isDuplicate =true
 } 
     console.log(user.username)
   
 })}
-isDuplicate ? console.log('username already exists') : console.log('username is available')
+isDuplicate ? console.log('username or email already exists') : console.log('username and email are available')
 
-  // if(formState.password === formState.passwordConfirm){
-  //   setFormState ({...formState, valid:true})
-  // }else{
-  //   setFormState({...formState, valid:false})
-  // }
-    
-    // console.log(formState)
-    // setFormState(initialState)
-  }
+// {emails.map((email) => {
+//   if (email.email === formState.email){
+//   isDuplicate =true
+// } 
+//   console.log(email.email)
+
+// })}
+// isDuplicate ? console.log('email already exists') : console.log('email is available')
+
+  };
+  
     
   const handleChange=(e) => {
     setFormState({...formState, [e.target.id] : e.target.value})
   }
+
+
+
 
   return (
     <div className ='signupContainer'>
@@ -67,30 +77,31 @@ isDuplicate ? console.log('username already exists') : console.log('username is 
     
     {/* username */}
     <div className='usernameContainer'>
-    
-    <label htmlFor="username">Username: </label>
       <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.subject} />
-    
     </div>
+    
+    
+    
     
 
      <div className ='emailContainer'>
-    
     {/* email */}
-    <label htmlFor="email">Email: </label>
       <input type="text" id="email" placeholder='Email' onChange = {handleChange} value={formState.email}/>
-    
     </div>
+    
+    
+    
 
     {/* password */}
     <div className='passwordContainer'>
-     <label htmlFor="password">Password: </label>
-      <input type='password' id="password" placeholder='Password' onChange = {handleChange} value = {formState.password} />
+      <input type='password' 
+      id="password" 
+      placeholder='Password' 
+      onChange = {handleChange} value = {formState.password} />
       </div>
-
+     
     {/* confirm password */}
     <div className='confirm-passwordContainer'>
-    <label htmlFor="passwordConfirm">Confirm password</label>
     <input
           type="password"
           placeholder="Confirm password"
@@ -105,7 +116,9 @@ isDuplicate ? console.log('username already exists') : console.log('username is 
   </div>
     
   )
+    
 }
+
     
 
 
