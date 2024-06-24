@@ -61,7 +61,7 @@ isDuplicate ? console.log('username already exists') : console.log('username is 
   return (
     <div className ='signupContainer'>
 
-<h1>Signup</h1>
+      <h1>Signup</h1>
     
     <form onSubmit={handleSubmit}>
     

@@ -22,11 +22,13 @@ body {
   text-transform: uppercase;
   font-size: 5rem;
   margin: 100px 0 0 0;
+  color: #ffb703;
 }
 .titleContainer p {
   font-family: "Share Tech Mono", monospace;
   font-size: 1.5rem;
   margin-top: 0;
+  color: #fb8500;
 }
 .loginContainer {
   background-color: #e8e8e8;
