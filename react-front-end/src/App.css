@@ -117,3 +117,11 @@ hr {
   border-radius: 3px;
   outline: none;
 }
+
+.invalid {
+  color: red;
+}
+
+.valid {
+  color: green;
+}
