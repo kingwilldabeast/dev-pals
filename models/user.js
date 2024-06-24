@@ -5,15 +5,18 @@ const { Schema } = require('mongoose')
 const UserSchema = new Schema(
     {
         username: {type: String, required: true},
+        email: {type: String},
         password: {type: String, required: true},
+        firstname: {type: String},
+        lastname: {type: String},
+        age: {type: String},
         firstname: {type: String},
         lastname: {type: String},
         age: {type: String},
         //DOB 
         //array of skills 
         location: {type: String},
-        profilePicURL: {type: String},
-        likedPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }]
+        profilePicURL: {type: String}
     },
     {timestamps: true}
 
