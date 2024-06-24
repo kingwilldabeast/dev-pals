@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import '../App.css'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 //  const { loggedInUser } = useContext(LoggedInUserContext)
 
 export default function Signup () {
@@ -16,8 +17,9 @@ const [formState, setFormState]=useState(initialState);
 const [users, setUsers]=useState([]);
 const [emails, setEmails]=useState([]);
 const [message, setMessage]=useState('')
-const [success, setSuccess] = useState(false)
-const [failure, setFailure] = useState(false)
+const [success, setSuccess] = useState(false);
+const [failure, setFailure] = useState(false);
+const navigate = useNavigate();
 
 // const { loggedInUser } = useContext(LoggedInUserContext)
 // const [duplicateUser, setDuplicateUser]=useState(false);
@@ -94,6 +96,8 @@ const handleSubmit =(e) => {
         
         console.log(`users are ${response.data}`)
         if (response.status === 201) {
+          navigate(`/userProfile/${response.data._id}`)
+          // navigate(`/username/${formState.username}`)
             // const newEvent = await response.json();
             console.log("account created");
         } else {
