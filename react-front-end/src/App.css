@@ -92,3 +92,28 @@ hr {
 .signupBtn {
   color: #FFF;
 }
+/* sign-up */
+
+.signupContainer {
+  background-color: #e8e8e8;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px #0000008a; 
+}
+.usernameContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 80%;
+  color: #000;
+}
+.confirm-passwordContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 80%;
+  color: #000;
+}
+.usernameContainer , .confirm-passwordContainer, input {
+  font-size: 17px;
+  padding: 10px 5px;
+  border-radius: 3px;
+  outline: none;
+}
