@@ -7,7 +7,7 @@ import axios from 'axios'
 export default function Editor () {
   
     let navigate = useNavigate()
-    const { loggedInUser } = useContext(LoggedInUserContext)
+    const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext)
     const [activeUser, setActiveUser] = useState({})
     const { username } = useParams()
     const [message, setMessage]=useState('')
@@ -16,14 +16,19 @@ export default function Editor () {
     const initialState = {
         username: "",
         email: "",
-        password: ""
+        password: "",
+        firstname: "",
+        lastname: "",
+        age: "",
+        location: "",
+        profilePicURL: "",
     };
     const [formState, setFormState]=useState(initialState);
 
     useEffect(() => {
   
       const getLoggedInUser = async () => {
-        const loggedInUserResponse = await axios.get(`http://localhost:3001/users/usernames/${loggedInUser.username}`)
+        const loggedInUserResponse = await axios.get(`http://localhost:3001/users/usernames/${username}`)
       //   const loggedInUserResponse = await axios.get(`http://localhost:3001/users/${loggedInUser_ID??}`)
         const loggedInUserData = loggedInUserResponse.data
         setActiveUser(loggedInUserData)
@@ -37,11 +42,51 @@ export default function Editor () {
         setFormState({
         username: activeUser.username || "",
         email: activeUser.email || "",
-        password: activeUser.password || ""
+        password: activeUser.password || "",
+        username: activeUser.username || "",
+        email: activeUser.email || "",
+        password: activeUser.password || "",
+        firstname: activeUser.firstname || "",
+        lastname: activeUser.lastname || "",
+        age: activeUser.age || "",
+        location: activeUser.location || "",
+        profilePicURL: activeUser.profilePicURL || ""
         });
     }, [activeUser]); 
 
-    console.log(activeUser._id)
+    // console.log(activeUser._id)
+
+    const cancelAndReturn =(e) => {
+        navigate(`/username/${username}`);
+        };
+
+    const logout = () => {
+        setLoggedInUser('')
+        localStorage.removeItem('loggedInUser')
+        navigate('/')
+        }
+
+    const deleteAccount = async (e) => {
+        try {
+            const response = await axios.delete(`http://localhost:3001/users/${activeUser._id}`, {
+            }, {
+                headers: {
+                "Content-Type": "application/json",
+                },
+            });
+                
+                console.log(`users are ${response.data}`)
+                if (response.status === 200) {
+                    console.log("account deleted");
+                    logout()
+                    navigate(`/signup`);
+                } else {
+                    console.error("Failed to delete account:", response.statusText);
+                }
+            } catch (error) {
+            console.error("Error:", error)
+            }
+    }
 
     const handleSubmit =(e) => {
         e.preventDefault()      
@@ -49,7 +94,7 @@ export default function Editor () {
         // setSuccess(true)
         // setMessage("Account updated!")
         updateAccount()
-        navigate(`/username/edit/${loggedInUser.username}`);
+        navigate(`/username/${formState.username}`);
         };
          
 
@@ -60,6 +105,11 @@ export default function Editor () {
             username: formState.username,
             email: formState.email,
             password: formState.password,
+            firstname: formState.firstname,
+            lastname: formState.lastname,
+            age: formState.age,
+            location: formState.location,
+            profilePicURL: formState.profilePicURL
         }, {
             headers: {
             "Content-Type": "application/json",
@@ -90,6 +140,8 @@ export default function Editor () {
       <div className='aboutUser'>
 
       </div>
+      <button type="submit" onClick={cancelAndReturn}>Cancel</button>
+
 
       <form onSubmit={handleSubmit}>
     
@@ -102,8 +154,8 @@ export default function Editor () {
       value={formState.username} />
     </div>
     
-     <div className ='emailContainer'>
     {/* email */}
+     <div className ='emailContainer'>
       <input type="text" 
       id="email" 
       placeholder='Email' 
@@ -120,12 +172,60 @@ export default function Editor () {
       onChange = {handleChange} 
       value = {formState.password} />
       </div>
+
+    {/* firstname */}
+    <div className='firstnameContainer'>
+      <input type='text' 
+      id="firstname" 
+      placeholder='First name' 
+      onChange = {handleChange} 
+      value = {formState.firstname} />
+      </div>
+
+    {/* lastname */}
+    <div className='lastnameContainer'>
+      <input type='text' 
+      id="lastname" 
+      placeholder='Last name' 
+      onChange = {handleChange} 
+      value = {formState.lastname} />
+    </div>
+
+    {/* age */}
+    <div className='ageContainer'>
+      <input type='text' 
+      id="age" 
+      placeholder='Age' 
+      onChange = {handleChange} 
+      value = {formState.age} />
+    </div>
+
+    {/* location */}
+    <div className='locationContainer'>
+      <input type='text' 
+      id="location" 
+      placeholder='Location' 
+      onChange = {handleChange} 
+      value = {formState.location} />
+    </div>
+
+    {/* profile pic */}
+    <div className='profile-pic-url-Container'>
+      <input type='text' 
+      id="profilePicURL" 
+      placeholder='paste profile link here' 
+      onChange = {handleChange} 
+      value = {formState.profilePicURL} />
+    </div>
+
+
      
     <button type="submit">Confirm changes</button>
-    <p className={success ? 'valid' : (failure ? 'invalid' : null)} >
-        {message}
-        </p>
-      </form>
+</form>
+
+    <button type="submit" onClick={deleteAccount}>Delete Account</button>
+
+
 
     </div>
   )
