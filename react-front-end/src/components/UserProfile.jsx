@@ -2,7 +2,9 @@ import { useContext, useEffect, useState } from 'react'
 import Header from './Header'
 import { useParams } from 'react-router-dom'
 import LoggedInUserContext from '../LoggedInUserContext'
+import profileImg from '../assets/profileImg.png'
 import axios from 'axios'
+import '../component-style/profile.css'
 
 export default function UserProfile () {
   
@@ -103,6 +105,7 @@ export default function UserProfile () {
   return (
     <div className='userProfile'>
       <Header/>
+      <img className="profileImage" src={profileImg} alt="Profile Image" width={200} />
       <div className='aboutUser'>
         <h2>About {viewedUser.firstname}</h2>
         <h3>{viewedUser.age} Years Old</h3>

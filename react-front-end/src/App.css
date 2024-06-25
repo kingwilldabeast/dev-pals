@@ -1,129 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-#root {
+/* GLOBAL STYLES */
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
+} */
 body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* place-items: center; */
+  /* min-width: 320px; */
+  min-height: 100vh;
   background-color: #1500ff;
 }
 
-/* LOGIN STYLES */
-.welcomeContainer {
-  display: flex;
-}
-.titleContainer {
-  margin-right:200px
-}
-.titleContainer h1 {
-  font-family: "Share Tech Mono", monospace;
-  text-transform: uppercase;
-  font-size: 5rem;
-  margin: 100px 0 0 0;
-  color: #ffb703;
-}
-.titleContainer p {
-  font-family: "Share Tech Mono", monospace;
-  font-size: 1.5rem;
-  margin-top: 0;
-  color: #fb8500;
-}
-.loginContainer {
-  background-color: #e8e8e8;
-  width: 400px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 10px 10px 10px #0000008a;
-}
-.emailContainer input{
-  font-family: "Share Tech Mono", monospace;
-  width: 80%;
-  color: #000;
-}
-.passwordContainer input{
-  font-family: "Share Tech Mono", monospace;
-  width: 80%;
-  color: #000;
-}
-.emailContainer , .passwordContainer, input {
-  font-size: 17px;
-  padding: 10px 5px;
-  border-radius: 3px;
-  outline: none;
-}
-input {
-  background-color: #e8e8e8;
-  border: 2px solid blue;
-}
-button.submitBtn {
-  font-family: "Share Tech Mono", monospace;
-  background-color: blue;
-  width: 80%;
-  margin-top: 10px;
-  border-radius: 5px;
-  outline: none;
-}
-button.submitBtn:focus {
-  outline: none;
-}
-button.submitBtn:hover {
-  background-color: #0084ff;
-}
-.signupBtnContainer, h4{
-  font-family: "Share Tech Mono", monospace;
-  color:rgb(79, 79, 79);
-  margin: 0;
-}
-hr {
-  margin: 30px 0 0 0;
-}
-.signupBtnContainer button {
-  font-family: "Share Tech Mono", monospace;
-  background-color: blue;
-  width: 50%;
-  margin-top: 10px;
-}
-.signupBtnContainer button:hover {
-  background-color: #0084ff;
-}
-.signupBtnContainer button:focus {
-  outline: none;
-}
-.signupBtn {
-  color: #FFF;
-}
-/* sign-up */
-
-.signupContainer {
-  background-color: #e8e8e8;
-  width: 400px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 10px 10px 10px #0000008a; 
-}
-.usernameContainer input{
-  font-family: "Share Tech Mono", monospace;
-  width: 80%;
-  color: #000;
-}
-.confirm-passwordContainer input{
-  font-family: "Share Tech Mono", monospace;
-  width: 80%;
-  color: #000;
-}
-.usernameContainer , .confirm-passwordContainer, input {
-  font-size: 17px;
-  padding: 10px 5px;
-  border-radius: 3px;
-  outline: none;
-}
-
-.invalid {
-  color: red;
-}
-
-.valid {
-  color: green;
-}
