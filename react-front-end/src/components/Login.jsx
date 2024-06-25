@@ -17,28 +17,25 @@ export default function Login () {
   const navigate = useNavigate()
   const { setLoggedInUser } = useContext(LoggedInUserContext)
 
-  const getUsers = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/users`)
-      setUsers(response.data)
-      // console.log(response.data)
-    } catch (error) {
-      console.error('user does not exixt', error)
-    }
-  }
-
   useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/users`)
+        setUsers(response.data)
+        // console.log(response.data)
+      } catch (error) {
+        console.error('user does not exixt', error)
+      }
+    }
     getUsers()
   }, [])
 
   const getUserId = async (username) => {
     try {
-      
       const response = await axios.get(`http://localhost:3001/users/username/${username}`)
-      console.log(`user id is ${response.data}`)
       
-      //assign API results to array
-      setLoggedInUser(response.data._id)
+      // setLoggedInUser(response.data._id)
+      localStorage.setItem('loggedInUser', response.data._id)
     } catch (error) {
       console.error("Error fetching data:", error)
     }
@@ -66,10 +63,8 @@ export default function Login () {
       })
       return
     }
-    // console.log('Welcome User')
-    // navigate('/userProfile/:userId')
-    navigate(`/username/${formState.username}`)
     getUserId(formState.username)
+    navigate(`/username/${formState.username}`)
   }
   
   const handleChange = (e) => {

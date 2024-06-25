@@ -3,13 +3,24 @@ import './App.css'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import UserProfile from './components/UserProfile'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import LoggedInUserContext from './LoggedInUserContext'
 // import FriendsList from './components/FriendsList'
 
 function App() {
 
   const [loggedInUser, setLoggedInUser] = useState('')
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('loggedInUser')
+    if (savedUser) {
+      setLoggedInUser(savedUser)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(`Current logged in user has the id: ${loggedInUser}`)
+  }, [loggedInUser])
 
   return (
     <>
