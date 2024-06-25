@@ -1,7 +1,7 @@
 
     
 //ASYNC versions, if using mongoose
-const {User, Post} = require('../models'); //with models/index.js file
+const {User, Post, Comment} = require('../models'); //with models/index.js file
 //const User = require('../models/User'); //without models/index.js file
 
 //Read
@@ -145,6 +145,39 @@ const toggleLikePost = async (req, res) => {
     }
 }
 
+const toggleLikeComment = async (req, res) => {
+    try {
+        const { userId, commentId } = req.params
+
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+
+        const comment = await Comment.findById(commentId)
+        if (!comment) {
+            return res.status(404).json({ error: 'Comment not found' })
+        }
+
+        const hasLiked = user.likedComments.includes(commentId)
+
+        if (hasLiked) {
+            user.likedComments.pull(commentId)
+            comment.likes -= 1
+        } else {
+            user.likedComments.push(commentId)
+            comment.likes += 1
+        }
+
+        await user.save()
+        await comment.save()
+
+        res.status(200).json({comment})
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
 module.exports = {
     getAllUsers, 
     getUserById, 
@@ -152,6 +185,7 @@ module.exports = {
     updateUser, 
     deleteUser,
     toggleLikePost,
+    toggleLikeComment,
     getUserByUsername,
     getUserIdByUsername
 }

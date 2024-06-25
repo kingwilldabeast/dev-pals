@@ -41,6 +41,10 @@ getUsers()
 
 const handleSubmit =(e) => {
   e.preventDefault()
+  if(!formState.email || !formState.password || !formState.passwordConfirm || !formState.username) {
+    alert(`Please update every field`)
+    return
+  }
 
   let isDuplicate=false
 
@@ -126,7 +130,7 @@ const handleSubmit =(e) => {
     
     {/* username */}
     <div className='usernameContainer'>
-      <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.subject} />
+      <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.username} />
     </div>
     
     
