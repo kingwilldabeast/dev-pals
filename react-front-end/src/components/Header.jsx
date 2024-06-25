@@ -36,11 +36,24 @@ export default function Header () {
 
   }
 
+  const openEditor = (e) => {
+    navigate(`/username/edit/${loggedInUser.username}`);
+  }
+
+  const logout = () => {
+    setLoggedInUser('')
+    localStorage.removeItem('loggedInUser')
+    navigate('/')
+  }
+
   useEffect(() => {
     if (profile) {
       navigate(`/username/${profile.username}`);
     }
   }, [profile, navigate]);
+
+
+
   return (
     <div className="" >
           <h1>Header</h1>
@@ -55,7 +68,9 @@ export default function Header () {
             />
             <button>Find profile</button>
           </form>
-      <p>{`${loggedInUser.username} is logged in`}</p>
+          <button onClick={openEditor}>Edit user info</button>
+        <button onClick={logout}>Logout</button>
+        <p>{`${loggedInUser.username} is logged in`}</p>
     </div>
   )
 }
