@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import Header from './Header'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
 
@@ -13,42 +13,6 @@ export default function UserProfile () {
   const [postComments, setPostComments] = useState({})
   const { username } = useParams()
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext)
-  const navigate = useNavigate()
-
-  // useEffect(() => {
-  //   const getViewedUser = async () => {
-  //     const viewedUserResponse = await axios.get(`http://localhost:3001/users/usernames/${username}`)
-  //     const viewedUserData = viewedUserResponse.data
-  //     setViewedUser(viewedUserData)
-  //   }
-  //   getViewedUser()
-
-  //   const getLoggedInUser = async () => {
-  //     const loggedInUserResponse = await axios.get(`http://localhost:3001/users/${loggedInUser}`)
-  //     const loggedInUserData = loggedInUserResponse.data
-  //     setactiveUser(loggedInUserData)
-  //   }
-  //   getLoggedInUser()
-
-  //   const getUserPosts = async () => {
-  //     const postsResponse = await axios.get(`http://localhost:3001/userPosts/${username}`)
-  //     const userPosts = postsResponse.data
-  //     setPosts(userPosts)
-
-  //     userPosts.forEach(post => getPostComments(post._id))
-  //   }
-  //   getUserPosts()
-
-  //   const getPostComments = async (postId) => {
-  //     const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
-  //     const comments = commentsResponse.data
-  //     // Had trouble with state here, and got a solution from ChatGPT. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
-  //     setPostComments(prevState => ({
-  //       ...prevState,
-  //       [postId]: comments
-  //     }))
-  //   }
-  // }, [username, loggedInUser])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,6 +49,7 @@ export default function UserProfile () {
       const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
       const comments = commentsResponse.data
 
+      // Had trouble with state here, and got a solution from ChatGPT. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
       setPostComments(prevState => ({
         ...prevState,
         [postId]: comments
@@ -134,12 +99,6 @@ export default function UserProfile () {
       activeUser.likedPosts.push(postId)
     }
   }
-
-  const logout = () => {
-    setLoggedInUser('')
-    localStorage.removeItem('loggedInUser')
-    navigate('/')
-  }
   
   return (
     <div className='userProfile'>
@@ -187,7 +146,6 @@ export default function UserProfile () {
             </div>
           ))}
       </div>
-      <button onClick={logout}>Logout</button>
     </div>
   )
 }
