@@ -55,7 +55,7 @@ export default function Header () {
             />
             <button>Find profile</button>
           </form>
-      <p>{`${loggedInUser.username} is logged in`}</p>
+      {/* <p>{`${loggedInUser.username} is logged in`}</p> */}
     </div>
   )
 }

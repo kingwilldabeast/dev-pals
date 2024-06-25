@@ -15,7 +15,7 @@ export default function Login () {
   const [formState, setFormState] = useState(initialState)
   const [users, setUsers] = useState([])
   const navigate = useNavigate()
-  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext)
+  const { setLoggedInUser } = useContext(LoggedInUserContext)
 
   const getUsers = async () => {
     try {
@@ -31,19 +31,18 @@ export default function Login () {
     getUsers()
   }, [])
 
-  const getData = async (username) => {
+  const getUserId = async (username) => {
     try {
       
-      const response = await axios.get(`http://localhost:3001/users/usernames/${username}`)
-      console.log(`users are ${response.data}`)
+      const response = await axios.get(`http://localhost:3001/users/username/${username}`)
+      console.log(`user id is ${response.data}`)
       
       //assign API results to array
-      setLoggedInUser(response.data)
+      setLoggedInUser(response.data._id)
     } catch (error) {
       console.error("Error fetching data:", error)
     }
   }
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -70,7 +69,7 @@ export default function Login () {
     // console.log('Welcome User')
     // navigate('/userProfile/:userId')
     navigate(`/username/${formState.username}`)
-    getData(formState.username)
+    getUserId(formState.username)
   }
   
   const handleChange = (e) => {

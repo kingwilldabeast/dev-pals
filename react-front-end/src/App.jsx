@@ -8,8 +8,8 @@ import LoggedInUserContext from './LoggedInUserContext'
 // import FriendsList from './components/FriendsList'
 
 function App() {
-  
-  const [loggedInUser, setLoggedInUser] = useState('66779b976f742d445e0b75d8')
+
+  const [loggedInUser, setLoggedInUser] = useState('')
 
   return (
     <>

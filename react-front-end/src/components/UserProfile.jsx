@@ -48,7 +48,6 @@ export default function UserProfile () {
         [postId]: comments
       }))
     }
-    getPostComments()
   }, [username])
 
   const createNewPost = async (content) => {
