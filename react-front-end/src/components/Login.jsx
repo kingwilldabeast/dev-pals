@@ -14,35 +14,31 @@ export default function Login () {
   const [formState, setFormState] = useState(initialState)
   const [users, setUsers] = useState([])
   const navigate = useNavigate()
-  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext)
-
-  const getUsers = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/users`)
-      setUsers(response.data)
-      // console.log(response.data)
-    } catch (error) {
-      console.error('user does not exixt', error)
-    }
-  }
+  const { setLoggedInUser } = useContext(LoggedInUserContext)
 
   useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/users`)
+        setUsers(response.data)
+        // console.log(response.data)
+      } catch (error) {
+        console.error('user does not exixt', error)
+      }
+    }
     getUsers()
   }, [])
 
-  const getData = async (username) => {
+  const getUserId = async (username) => {
     try {
+      const response = await axios.get(`http://localhost:3001/users/username/${username}`)
       
-      const response = await axios.get(`http://localhost:3001/users/usernames/${username}`)
-      console.log(`users are ${response.data}`)
-      
-      //assign API results to array
-      setLoggedInUser(response.data)
+      // setLoggedInUser(response.data._id)
+      localStorage.setItem('loggedInUser', response.data._id)
     } catch (error) {
       console.error("Error fetching data:", error)
     }
   }
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -66,8 +62,7 @@ export default function Login () {
       })
       return
     }
-    // console.log('Welcome User')
-    // navigate('/userProfile/:userId')
+    getUserId(formState.username)
     navigate(`/username/${formState.username}`)
   }
   

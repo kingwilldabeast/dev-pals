@@ -3,13 +3,25 @@ import './App.css'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import UserProfile from './components/UserProfile'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Editor from './components/Editor'
 import LoggedInUserContext from './LoggedInUserContext'
 // import FriendsList from './components/FriendsList'
 
 function App() {
-  
-  const [loggedInUser, setLoggedInUser] = useState('66779b976f742d445e0b75d8')
+
+  const [loggedInUser, setLoggedInUser] = useState('')
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('loggedInUser')
+    if (savedUser) {
+      setLoggedInUser(savedUser)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(`Current logged in user has the id: ${loggedInUser}`)
+  }, [loggedInUser])
 
   return (
     <>
@@ -18,6 +30,7 @@ function App() {
           <Route path="/" element={<Login/>}/>
           <Route path="/signup" element={<Signup/>}/>
           <Route path="/username/:username" element={<UserProfile/>}/>
+          <Route path="/username/edit/:username" element={<Editor/>}/>
           {/* <Route path="/userProfile/:userId" element={<UserProfile/>}/> */}
           {/* <Route path="/userProfile/:userId/friends" element={<FriendsList/>}/> */}
         </Routes>

@@ -12,44 +12,52 @@ export default function UserProfile () {
   const [postText, setPostText] = useState('')
   const [postComments, setPostComments] = useState({})
   const { username } = useParams()
-  const { loggedInUser } = useContext(LoggedInUserContext)
+  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext)
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const getViewedUserResponse = axios.get(`http://localhost:3001/users/usernames/${username}`)
+        const getLoggedInUserResponse = axios.get(`http://localhost:3001/users/${loggedInUser}`)
+        const getUserPostsResponse = axios.get(`http://localhost:3001/userPosts/${username}`)
 
-    const getViewedUser = async () => {
-      const viewedUserResponse = await axios.get(`http://localhost:3001/users/usernames/${username}`)
-      const viewedUserData = viewedUserResponse.data
-      setViewedUser(viewedUserData)
+        // Goodness gracious, the asynchronous nature of React can be such a headache. Took about 2 hours of research to find this solution of Promise.all. ChatGPT also simplified my code while helping me try to deal with this, so that's cool I guess. 
+        const [viewedUserResponse, loggedInUserResponse, userPostsResponse] = await Promise.all([
+          getViewedUserResponse,
+          getLoggedInUserResponse,
+          getUserPostsResponse
+        ])
+
+        setViewedUser(viewedUserResponse.data)
+        setactiveUser(loggedInUserResponse.data)
+        setPosts(userPostsResponse.data)
+
+        userPostsResponse.data.forEach(post => {
+          getPostComments(post._id)
+        })
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
     }
-    getViewedUser()
 
-    const getLoggedInUser = async () => {
-      const loggedInUserResponse = await axios.get(`http://localhost:3001/users/${loggedInUser}`)
-      const loggedInUserData = loggedInUserResponse.data
-      setactiveUser(loggedInUserData)
-    }
-    getLoggedInUser()
+    fetchData()
+  }, [username, loggedInUser])
 
-    const getUserPosts = async () => {
-      const postsResponse = await axios.get(`http://localhost:3001/userPosts/${username}`)
-      const userPosts = postsResponse.data
-      setPosts(userPosts)
-
-      userPosts.forEach(post => getPostComments(post._id))
-    }
-    getUserPosts()
-
-    const getPostComments = async (postId) => {
+  
+  const getPostComments = async (postId) => {
+    try {
       const commentsResponse = await axios.get(`http://localhost:3001/postComments/${postId}`)
       const comments = commentsResponse.data
+
       // Had trouble with state here, and got a solution from ChatGPT. The problem is that I didn't need an array of comments like I thought, because each postId has comments that are assigned to it. This means that we need to hold the postId and the array of its comments as a pair in an object like this: { postId1: [{comment1}, {comment2}], postId2: [{comment1}] } Therefore, we need to make sure that each unique postId is added to the object without replacing the previous postId's.
       setPostComments(prevState => ({
         ...prevState,
         [postId]: comments
       }))
+    } catch (error) {
+      console.error('Error fetching post comments:', error)
     }
-    getPostComments()
-  }, [username])
+  }
 
   const createNewPost = async (content) => {
     const newPost = {
@@ -100,15 +108,18 @@ export default function UserProfile () {
         <h3>{viewedUser.age} Years Old</h3>
         <h3>Lives in {viewedUser.location}</h3>
       </div>
-      <form className='createPost' onSubmit={handleSubmitPost}>
-        <input 
-          type="textarea"
-          value={postText} 
-          onChange={(e) => setPostText(e.target.value)}
-          placeholder='Write your next post here'
-        />
-        <button className='postButton' type='submit'>Post</button>
-      </form>
+      {/* Only show createNewPost form if viewing your own page */}
+      {activeUser.username === viewedUser.username && (
+        <form className='createPost' onSubmit={handleSubmitPost}>
+          <input 
+            type="textarea"
+            value={postText} 
+            onChange={(e) => setPostText(e.target.value)}
+            placeholder='Write your next post here'
+          />
+          <button className='postButton' type='submit'>Post</button>
+        </form>
+      )}
       <div className='posts'>
         {posts.map(post => (
             <div className='post' key={post._id}>
@@ -117,7 +128,10 @@ export default function UserProfile () {
               <h4 className='postLikes'>Likes: {post.likes}</h4>
               <button className='likePostButton' onClick={() => handleToggleLike(post._id)}>Like</button>
               {/* <button className='editPostButton'>Edit</button> */}
-              <button className='removePostButton' onClick={() => handleRemovePost(post._id)}>Remove</button>
+              {/* Only show the remove post option if viewing your own post */}
+              {activeUser._id === post.user_id && (
+                <button className='removePostButton' onClick={() => handleRemovePost(post._id)}>Remove</button>
+              )}
               <div className='comments'>
               {postComments[post._id]?.map(comment => (
                 <div className='comment' key={comment._id}>
