@@ -13,7 +13,8 @@ const UserSchema = new Schema(
         //DOB 
         //array of skills 
         location: {type: String},
-        profilePicURL: {type: String}
+        profilePicURL: {type: String},
+        likedPosts: [{ type: Schema.Types.ObjectId, ref:'Post' }]
     },
     {timestamps: true}
 

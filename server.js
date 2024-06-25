@@ -29,6 +29,7 @@ app.get('/comments', CommentController.getAllComments)
 
 app.get('/users/:id', UserController.getUserById)
 app.get('/users/usernames/:username', UserController.getUserByUsername)
+app.get('/users/username/:username', UserController.getUserIdByUsername)
 app.get('/posts/:id', PostController.getPostById)
 app.get('/userPosts/:username', PostController.getPostsByUsername)
 app.get('/comments/:id', CommentController.getCommentById)

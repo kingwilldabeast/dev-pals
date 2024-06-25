@@ -48,6 +48,19 @@ const getUserByUsername = async (req, res) => {
     }
 }
 
+const getUserIdByUsername = async (req, res) => {
+    const { username } = req.params
+    try {
+        const user = await User.findOne({ username: username })
+        if (user) {
+            return res.json({ _id: user._id })
+        }
+        return res.status(404).send('User not found')
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
 //create
 const createUser = async (req, res) => {
     try {
@@ -139,5 +152,6 @@ module.exports = {
     updateUser, 
     deleteUser,
     toggleLikePost,
-    getUserByUsername
+    getUserByUsername,
+    getUserIdByUsername
 }
