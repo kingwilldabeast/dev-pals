@@ -41,6 +41,10 @@ getUsers()
 
 const handleSubmit =(e) => {
   e.preventDefault()
+  if(!formState.email || !formState.password || !formState.passwordConfirm || !formState.username) {
+    alert(`Please update every field`)
+    return
+  }
 
   let isDuplicate=false
 

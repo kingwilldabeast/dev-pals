@@ -35,7 +35,7 @@ const getCommentsByPostId = async (req, res) => {
     try {
         const { postId } = req.params
         // I was getting confused about the multiple api calls I was having to make in order to obtain information from both the CommentSchema and UserSchema. ChatGPT recommended this populate method, which replaces the user_id with only the fields that we want from the user_id for our comment divs. This makes for 1 less api call, increased performance and less headaches. Definitely a good method to remember.
-        const comments = await Comment.find({ post_id: postId }).populate('user_id', 'firstname lastname')
+        const comments = await Comment.find({ post_id: postId }).populate('user_id', 'username')
         return res.status(200).json(comments)
     } catch (error) {
         return res.status(500).send(error.message)
@@ -45,16 +45,12 @@ const getCommentsByPostId = async (req, res) => {
 //create
 const createComment = async (req, res) => {
     try {
-        const newObject = await new Comment(req.body)
-        await newObject.save()
-        return res.status(201).json({
-            newObject,
-        });
+        const newComment = new Comment(req.body)
+        await newComment.save()
+        const populatedComment = await Comment.findById(newComment._id).populate('user_id', 'username')
+        res.status(201).json(populatedComment)
     } catch (error) {
-        // if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        //     return res.status(404).send(`That Comment doesn't exist`)
-        // }
-        return res.status(500).json({ error: error.message })
+        res.status(500).send(error.message)
     }
 }
 

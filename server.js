@@ -45,6 +45,7 @@ app.put('/users/:id', UserController.updateUser)
 app.put('/posts/:id', PostController.updatePost)
 app.put('/comments/:id', CommentController.updateComment)
 app.put('/users/:userId/likes/:postId', UserController.toggleLikePost)
+app.put('/users/:userId/likes/:commentId', UserController.toggleLikeComment)
 
 //DELETE
 app.delete('/users/:id', UserController.deleteUser)
