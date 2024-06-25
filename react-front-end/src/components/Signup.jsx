@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import '../App.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { Button } from 'react-bootstrap';
+import GetStartedModal from './GetStartedModal'
 //  const { loggedInUser } = useContext(LoggedInUserContext)
 
 export default function Signup () {
@@ -19,7 +21,10 @@ const [emails, setEmails]=useState([]);
 const [message, setMessage]=useState('')
 const [success, setSuccess] = useState(false);
 const [failure, setFailure] = useState(false);
+const [showModal, setShowModal] = useState(false);
 const navigate = useNavigate();
+
+
 
 // const { loggedInUser } = useContext(LoggedInUserContext)
 // const [duplicateUser, setDuplicateUser]=useState(false);
@@ -41,7 +46,13 @@ getUsers()
 
 const handleSubmit =(e) => {
   e.preventDefault()
-
+  
+  if(!formState.email || !formState.password || !formState.passwordConfirm || !formState.username) {
+    setMessage(`All fields are required`)
+    setFailure(true)
+    return
+  }
+  
   let isDuplicate=false
 
     console.log(formState)
@@ -50,8 +61,7 @@ const handleSubmit =(e) => {
       setFailure(true)
     } else if (formState.password.length < 7) {
       setMessage("Passwords match but are too short")
-      setFailure(true)
-    }
+      setFailure(true) }
     else {
       {users.map((user) => {
         if (user.username === formState.username || user.email === formState.email ){
@@ -69,6 +79,7 @@ const handleSubmit =(e) => {
             console.log(formState)
             setSuccess(true)
             setMessage("Account created!")
+            
             setFormState(initialState) //wipe and reset 
             addNewAccount()
     
@@ -82,7 +93,7 @@ const handleSubmit =(e) => {
 
 
 
-  const addNewAccount = async () => {
+     const addNewAccount = async () => {
   
     try {
       const response = await axios.post("http://localhost:3001/users", {
@@ -95,14 +106,14 @@ const handleSubmit =(e) => {
       });
         
         console.log(`users are ${response.data}`)
-        if (response.status === 201) {
-          // navigate(`/userProfile/${response.data._id}`)
-          navigate(`/username/${formState.username}`)
-            // const newEvent = await response.json();
-            console.log("account created");
-        } else {
-            console.error("Failed to add account:", response.statusText);
-        }
+        // if (response.status === 201) {
+        //   // navigate(`/userProfile/${response.data._id}`)
+        //   navigate(`/username/${formState.username}`)
+        //     // const newEvent = await response.json();
+        //     console.log("account created");
+        // } else {
+        //     console.error("Failed to add account:", response.statusText);
+        // }
     } catch (error) {
       console.error("Error:", error)
     }
@@ -114,7 +125,8 @@ const handleSubmit =(e) => {
     setFormState({...formState, [e.target.id] : e.target.value})
   }
 
-
+  const handleShow = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
 
 
   return (
@@ -126,7 +138,7 @@ const handleSubmit =(e) => {
     
     {/* username */}
     <div className='usernameContainer'>
-      <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.subject} />
+      <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.username} />
     </div>
     
     
@@ -159,12 +171,17 @@ const handleSubmit =(e) => {
           value={formState.passwordConfirm}
         />
         </div>
-    <button type="submit">Sign Up</button>
+    <Button type="submit" variant='primary' onClick={handleShow}>Sign Up</Button>
     <p className={success ? 'valid' : (failure ? 'invalid' : null)} >
         {message}
         </p>
+        <GetStartedModal show={showModal} handleClose={handleClose} />
       </form>
+
+      
   </div>
+
+  
     
   )
     
