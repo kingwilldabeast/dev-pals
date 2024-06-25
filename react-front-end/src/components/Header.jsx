@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom"
 import { useState, useEffect, useContext } from 'react'
 import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
+import profileImg from '../assets/profileImg.png'
+import '../profile.css'
 
 export default function Header () {
   let navigate = useNavigate()
@@ -42,10 +44,11 @@ export default function Header () {
     }
   }, [profile, navigate]);
   return (
-    <div className="" >
+    <div className="headerContainer" >
+          <img className="profileImage" src={profileImg} alt="Profile Image" width={200} />
           <h1>Header</h1>
           <form onSubmit={handleSubmit}>
-            <input
+            <input className="searchBar"
               name="searchBar"
               placeholder="search a profile"
               type="text"
