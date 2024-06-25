@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
+import './component-style/profile.css'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import UserProfile from './components/UserProfile'

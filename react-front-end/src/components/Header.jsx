@@ -3,6 +3,8 @@ import { useState, useEffect, useContext } from 'react'
 import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
 
+import '../component-style/header.css'
+
 export default function Header () {
   let navigate = useNavigate()
 
@@ -55,22 +57,25 @@ export default function Header () {
 
 
   return (
-    <div className="" >
-          <h1>Header</h1>
-          <form onSubmit={handleSubmit}>
-            <input
-              name="searchBar"
-              placeholder="search a profile"
-              type="text"
-              value={inputInProgress.searchBar}
-              onChange={updateTyping}
-              required
-            />
-            <button>Find profile</button>
-          </form>
-          <button onClick={openEditor}>Edit user info</button>
-        <button onClick={logout}>Logout</button>
-        <p>{`${loggedInUser.username} is logged in`}</p>
+    <div className="headerContainer" >
+      {/* <p>{`Welcome ${loggedInUser.username}`}</p> */}
+      {/* Search Bar */}
+      <form className="searchBar" onSubmit={handleSubmit}>
+        <input className="searchBar"
+          name="searchBar"
+          placeholder="search a profile"
+          type="text"
+          value={inputInProgress.searchBar}
+          onChange={updateTyping}
+          required
+        />
+        <button className="">Find profile</button>
+      </form>
+      {/* More Bottons Options */}
+      <div className="moreBtn">
+        <button className="editorBtn" onClick={openEditor}>Edit user info</button>
+        <button className="logoutBtn" onClick={logout}>Logout</button>
+      </div>
     </div>
   )
 }

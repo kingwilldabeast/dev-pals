@@ -1,0 +1,100 @@
+/* LOGIN STYLES */
+.welcomeContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loginTitleContainer {
+  margin-right: 200px;
+}
+.loginTitleContainer h1 {
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  font-size: 5rem;
+  margin: 20px 0 0 0;
+  color: #ffb703;
+}
+.loginContainer h3 {
+  color: #FB8500;
+  font-size: 2rem;
+  margin: 20px 0 50px 0;
+  text-transform: uppercase;
+}
+.loginTitleContainer p {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 1.5rem;
+  margin-top: 0;
+  color: #fb8500;
+}
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8e8e8;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px #0000008a;
+}
+.emailContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 20vw;
+  color: #000;
+}
+.passwordContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 20vw;
+  color: #000;
+}
+.emailContainer , .passwordContainer, input {
+  font-size: 17px;
+  padding: 10px 5px;
+  border-radius: 3px;
+  outline: none;
+}
+input {
+  background-color: #e8e8e8;
+  border: 2px solid blue;
+}
+button.submitBtn {
+  font-family: "Share Tech Mono", monospace;
+  background-color: #fb8500;
+  width: 20vw;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  outline: none;
+}
+button.submitBtn:focus {
+  outline: none;
+}
+button.submitBtn:hover {
+  background-color: #0084ff;
+}
+.signupBtnContainer, h4{
+  font-family: "Share Tech Mono", monospace;
+  color:rgb(79, 79, 79);
+  margin: 0;
+  text-align: center;
+}
+hr {
+  width: 20vw;
+  margin: 30px 0 0 0;
+}
+.signupBtnContainer button {
+  font-family: "Share Tech Mono", monospace;
+  background-color: #fb8500;
+  width: 20vw;
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+.signupBtnContainer button:hover {
+  background-color: #0084ff;
+}
+.signupBtnContainer button:focus {
+  outline: none;
+}
+.signupBtn {
+  color: #FFF;
+}

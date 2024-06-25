@@ -1,0 +1,52 @@
+/* SIGN UP STYLES */
+.signupContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8e8e8;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px #0000008a; 
+}
+.signupTitle {
+  color: #FB8500;
+  font-size: 2rem;
+  margin: 20px 0 50px 0;
+  text-transform: uppercase;
+  text-align: center;
+}
+.usernameContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 20vw;
+  color: #000;
+}
+.confirm-passwordContainer input{
+  font-family: "Share Tech Mono", monospace;
+  width: 20vw;
+  color: #000;
+}
+.usernameContainer , .confirm-passwordContainer, input {
+  font-size: 17px;
+  padding: 10px 5px;
+  border-radius: 3px;
+  outline: none;
+}
+button.signupSubmitBtn {
+  font-family: "Share Tech Mono", monospace;
+  background-color: #FB8500;
+  width: 20vw;
+  margin-top: 10px;
+  color: #FFF;
+  font-size: 1.5rem;
+  padding: 10px;
+  
+}
+
+.invalid {
+  color: red;
+}
+.valid {
+  color: green;
+}
