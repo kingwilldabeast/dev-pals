@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import '../App.css'
+import '../component-style/signup.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 //  const { loggedInUser } = useContext(LoggedInUserContext)
@@ -123,52 +123,43 @@ const handleSubmit =(e) => {
 
   return (
     <div className ='signupContainer'>
+      <h1 className='signupTitle' >Sign up</h1>
 
-      <h1>Signup</h1>
-    
-    <form onSubmit={handleSubmit}>
-    
-    {/* username */}
-    <div className='usernameContainer'>
-      <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.username} />
-    </div>
-    
-    
-    
-    
-
-     <div className ='emailContainer'>
-    {/* email */}
-      <input type="text" id="email" placeholder='Email' onChange = {handleChange} value={formState.email}/>
-    </div>
-    
-    
-    
-
-    {/* password */}
-    <div className='passwordContainer'>
-      <input type='password' 
-      id="password" 
-      placeholder='Password' 
-      onChange = {handleChange} value = {formState.password} />
-      </div>
-     
-    {/* confirm password */}
-    <div className='confirm-passwordContainer'>
-    <input
-          type="password"
-          placeholder="Confirm password"
-          id="passwordConfirm"
-          onChange ={handleChange} 
-          value={formState.passwordConfirm}
-        />
+      <form onSubmit={handleSubmit}>
+        {/* username */}
+        <div className='usernameContainer'>
+          <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.subject} />
         </div>
-    <button type="submit">Sign Up</button>
-    <p className={success ? 'valid' : (failure ? 'invalid' : null)} >
-        {message}
-        </p>
+
+        {/* email */}
+        <div className ='emailContainer'>
+          <input type="text" id="email" placeholder='Email' onChange = {handleChange} value={formState.email}/>
+        </div>
+      
+        {/* password */}
+        <div className='passwordContainer'>
+          <input type='password' 
+            id="password" 
+            placeholder='Password' 
+            onChange = {handleChange} value = {formState.password} />
+        </div>
+      
+        {/* confirm password */}
+        <div className='confirm-passwordContainer'>
+          <input
+            type="password"
+            placeholder="Confirm password"
+            id="passwordConfirm"
+            onChange ={handleChange} 
+            value={formState.passwordConfirm}/>
+        </div>
+        {/* Submit Button */}
+        <button className="signupSubmitBtn" type="submit">Sign Up</button>
+          <p className={success ? 'valid' : (failure ? 'invalid' : null)} >
+            {message}
+            </p>
       </form>
-  </div>
+    </div>
     
   )
     

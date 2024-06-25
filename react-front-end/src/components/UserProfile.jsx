@@ -3,7 +3,9 @@ import Header from './Header'
 import { useParams, useNavigate } from 'react-router-dom'
 import profileImg from '../assets/profileImg.png'
 import LoggedInUserContext from '../LoggedInUserContext'
+import profileImg from '../assets/profileImg.png'
 import axios from 'axios'
+import '../component-style/profile.css'
 
 export default function UserProfile () {
   
