@@ -14,7 +14,8 @@ const UserSchema = new Schema(
         //array of skills 
         location: {type: String},
         profilePicURL: {type: String},
-        likedPosts: [{ type: Schema.Types.ObjectId, ref:'Post' }]
+        likedPosts: [{ type: Schema.Types.ObjectId, ref:'Post' }],
+        likedComments: [{ type: Schema.Types.ObjectId, ref:'Comment' }]
     },
     {timestamps: true}
 

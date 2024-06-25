@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useContext, useState, useEffect } from 'react'
 import axios from 'axios'
 import LoggedInUserContext from '../LoggedInUserContext'
-
+import '../component-style/login.css'
 
 
 export default function Login () {
@@ -76,12 +76,13 @@ export default function Login () {
 
   return (
     <div className="welcomeContainer">
-      <div className="titleContainer">
+      <div className="loginTitleContainer">
         <h1>Dev Pals</h1>
         <p>Connect | Network | Share</p>
       </div>
 
       <form className="loginContainer" onSubmit={handleSubmit}>
+        <h3>Log in</h3>
         {/* UserName */}
         <div className="emailContainer">
         <input type="text" id="username" placeholder="User Name" onChange={handleChange} value={formState.username} />
@@ -104,7 +105,7 @@ export default function Login () {
         <div className="signupBtnContainer">
           <hr/> 
           <h4>Need an account</h4>
-          <button><Link className="signupBtn" to='/signup'>Sign up</Link></button>
+          <Link className="signupBtn" to='/signup'><button>Sign up</button></Link>
           {/* <Link to='/UserProfile'>User Profile</Link> */}
         </div>
       </form>

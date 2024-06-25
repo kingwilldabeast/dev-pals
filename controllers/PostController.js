@@ -41,10 +41,7 @@ const getPostsByUsername = async (req, res) => {
         }
 
         const userPosts = await Post.find({ user_id: user._id })
-        if (userPosts.length > 0) {
-            return res.status(200).json(userPosts)
-        }
-        return res.status(404).send(`No posts found for user with username: ${username}`)
+        return res.status(200).json(userPosts)
     } catch (error) {
         return res.status(500).send(error.message)
     }

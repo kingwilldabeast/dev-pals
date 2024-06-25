@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import '../App.css'
+import '../component-style/signup.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'react-bootstrap';
@@ -138,7 +138,7 @@ const handleSubmit =(e) => {
     
     {/* username */}
     <div className='usernameContainer'>
-      <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.username} />
+      <input type='text' id='username' placeholder='Username' onChange={handleChange} value={formState.subject} />
     </div>
     
     
@@ -171,17 +171,12 @@ const handleSubmit =(e) => {
           value={formState.passwordConfirm}
         />
         </div>
-    <Button type="submit" variant='primary' onClick={handleShow}>Sign Up</Button>
+    <button type="submit">Sign Up</button>
     <p className={success ? 'valid' : (failure ? 'invalid' : null)} >
         {message}
         </p>
-        <GetStartedModal show={showModal} handleClose={handleClose} />
       </form>
-
-      
   </div>
-
-  
     
   )
     
