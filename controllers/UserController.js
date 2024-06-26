@@ -148,7 +148,7 @@ const toggleLikePost = async (req, res) => {
 const toggleLikeComment = async (req, res) => {
     try {
         const { userId, commentId } = req.params
-
+        // console.log(`userId: ${userId}, commentId: ${commentId}`)
         const user = await User.findById(userId)
         if (!user) {
             return res.status(404).json({ error: 'User not found' })

@@ -1,11 +1,13 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useContext, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
-import LoggedInUserContext from '../LoggedInUserContext'
+// import LoggedInUserContext from '../LoggedInUserContext'
 import '../component-style/login.css'
 
 
 export default function Login () {
+  const loggedInUser = localStorage.getItem('loggedInUser')
+  
   const initialState = {
     username: '',
     password: '',
@@ -15,9 +17,16 @@ export default function Login () {
   const [formState, setFormState] = useState(initialState)
   const [users, setUsers] = useState([])
   const navigate = useNavigate()
-  const { setLoggedInUser } = useContext(LoggedInUserContext)
 
   useEffect(() => {
+    if (loggedInUser) {
+      const redirectToUserProfile = async (user) => {
+      const userResponse = await axios.get(`http://localhost:3001/users/${user}`)
+      navigate(`/username/${userResponse.data.username}`)
+      }
+      redirectToUserProfile(loggedInUser)
+    }
+
     const getUsers = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/users`)
@@ -36,6 +45,7 @@ export default function Login () {
       
       // setLoggedInUser(response.data._id)
       localStorage.setItem('loggedInUser', response.data._id)
+      navigate(`/username/${username}`)
     } catch (error) {
       console.error("Error fetching data:", error)
     }
@@ -64,7 +74,6 @@ export default function Login () {
       return
     }
     getUserId(formState.username)
-    navigate(`/username/${formState.username}`)
   }
   
   const handleChange = (e) => {

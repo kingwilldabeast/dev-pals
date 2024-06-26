@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './Header'
 import { useParams, useNavigate } from 'react-router-dom'
 import profileImg from '../assets/profileImg.png'
-import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
 import '../component-style/profile.css'
+
 
 export default function UserProfile () {
   
@@ -16,14 +16,14 @@ export default function UserProfile () {
   const [commentText, setCommentText] = useState({})
   const [commentFormVisible, setCommentFormVisible] = useState({})
   const { username } = useParams()
-  const { loggedInUser } = useContext(LoggedInUserContext)
   const navigate = useNavigate()
+  const loggedInUser = localStorage.getItem('loggedInUser')
 
   useEffect(() => {
-    // if (!loggedInUser) {
-    //   navigate('/')
-    //   return
-    // }
+    if (!loggedInUser) {
+      navigate('/')
+      return
+    }
 
     const fetchData = async () => {
       try {
@@ -50,9 +50,10 @@ export default function UserProfile () {
       }
     }
 
-    fetchData()
+    if (loggedInUser) {
+      fetchData()
+    }
   }, [username, loggedInUser, navigate])
-
   
   const getPostComments = async (postId) => {
     try {
@@ -138,7 +139,7 @@ export default function UserProfile () {
 
   const handleToggleLikePost = async (postId) => {
     // console.log(activeUser._id)
-    const response = await axios.put(`http://localhost:3001/users/${activeUser._id}/likes/${postId}`)
+    const response = await axios.put(`http://localhost:3001/users/${activeUser._id}/postLikes/${postId}`)
     const updatedPost = response.data
 
     // I need to update the local state of posts to reflect the new amount of likes
@@ -155,26 +156,38 @@ export default function UserProfile () {
     }
   }
 
-  const handleToggleLikeComment = async (commentId) => {
-    console.log(`Liking comments will be fixed soon! You are trying to like comment with id of ${commentId}`)
-    // console.log(activeUser._id)
-    // const response = await axios.put(`http://localhost:3001/users/${activeUser._id}/likes/${commentId}`)
-    // const updatedComment = response.data
+  const handleToggleLikeComment = async (commentId, postId) => {
+    try {
+      const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/commentLikes/${commentId}`)
+      const updatedComment = response.data.comment
+      // console.log(updatedComment)
 
-    // setPostComments(postComments.map(comment => 
-    //   comment._id === commentId ? updatedComment : comment
-    // ))
+      // This was tricky because postComments is a object where eah key is a postId and its value is an array of comments, meaning I couldn't simply map over the array like I did for posts. My brain broke, and there was no way I could have figured this out on my own given my current knowledge, so this is almost straight from ChatGPT. I can understand that we are needing to map over each comment in order to find the one with the correct comment._id, and then update it's local state to the state after the axios call. However, I need to learn the syntax of accessing this postComments object in the correct way, as ChatGPT helped me with here.
+      setPostComments(prevState => ({
+        ...prevState,
+        [postId]: prevState[postId].map(comment =>
+          // Had to add additional logic to ensure the comment maintains it's user_id
+            comment._id === commentId ? { ...comment, ...updatedComment, user_id: comment.user_id } : comment
+        )
+      }))
 
-    // if (activeUser.likedComments.includes(commentId)) {
-    //   activeUser.likedComments = activeUser.likedComments.filter(id => id !== commentId)
-    // } else {
-    //   activeUser.likedComments.push(commentId)
-    // }
+      setActiveUser(prevState => {
+        const likedComments = prevState.likedComments.includes(commentId)
+            ? prevState.likedComments.filter(id => id !== commentId)
+            : [...prevState.likedComments, commentId]
+        return {
+            ...prevState,
+            likedComments
+        }
+      })
+    } catch (error) {
+        console.error('Error toggling like comment:', error);
+    }
   }
   
   return (
     <div className='userProfile'>
-      <Header/>
+      <Header activeUser = {activeUser}/>
       <img className="profileImage" src={profileImg} alt="Profile Image" width={200} />
       <div className='aboutUser'>
         <h2>About {viewedUser.firstname}</h2>
@@ -245,7 +258,7 @@ export default function UserProfile () {
                   <p className='commentContent'>{comment.content}</p>
                   <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
                   <p className='commentLikes'>Likes: {comment.likes}</p>
-                  <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id)}>Like</button>
+                  <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id, post._id)}>Like</button>
                   {/* <button className='editCommentButton'>Edit</button> */}
 
                   {/* Only show the remove comment option if it is the logged in user's comment */}

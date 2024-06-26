@@ -1,13 +1,12 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './Header'
 import { useParams, useNavigate } from 'react-router-dom'
-import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
 
 export default function Editor () {
   
     let navigate = useNavigate()
-    const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext)
+    const loggedInUser = localStorage.getItem('loggedInUser')
     const [activeUser, setActiveUser] = useState({})
     const { username } = useParams()
     const [message, setMessage]=useState('')
@@ -29,7 +28,6 @@ export default function Editor () {
   
       const getLoggedInUser = async () => {
         const loggedInUserResponse = await axios.get(`http://localhost:3001/users/usernames/${username}`)
-      //   const loggedInUserResponse = await axios.get(`http://localhost:3001/users/${loggedInUser_ID??}`)
         const loggedInUserData = loggedInUserResponse.data
         setActiveUser(loggedInUserData)
     }
@@ -61,7 +59,7 @@ export default function Editor () {
         };
 
     const logout = () => {
-        setLoggedInUser('')
+        // setLoggedInUser('')
         localStorage.removeItem('loggedInUser')
         navigate('/')
         }
