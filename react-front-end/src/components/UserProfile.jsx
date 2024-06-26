@@ -5,6 +5,8 @@ import LoggedInUserContext from '../LoggedInUserContext'
 import profileImg from '../assets/profileImg.png'
 import axios from 'axios'
 import '../component-style/profile.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faHeart } from '@fortawesome/free-solid-svg-icons'
 
 export default function UserProfile () {
   
@@ -105,22 +107,25 @@ export default function UserProfile () {
   return (
     <div className='userProfile'>
       <Header/>
-      <img className="profileImage" src={profileImg} alt="Profile Image" width={200} />
+      
       <div className='aboutUser'>
+      <img className="profileImage" src={profileImg} alt="Profile Image" width={250} />
         <h2>About {viewedUser.firstname}</h2>
         <h3>{viewedUser.age} Years Old</h3>
         <h3>Lives in {viewedUser.location}</h3>
       </div>
       {/* Only show createNewPost form if viewing your own page */}
+      <div className="postSection">
       {activeUser.username === viewedUser.username && (
         <form className='createPost' onSubmit={handleSubmitPost}>
-          <input 
-            type="textarea"
+          <textarea 
+            rows="4"
+            cols="40"
             value={postText} 
             onChange={(e) => setPostText(e.target.value)}
             placeholder='Write your next post here'
           />
-          <button className='postButton' type='submit'>Post</button>
+          <button className='postBtn' type='submit'>Post  <FontAwesomeIcon icon={faPenToSquare} /></button>
         </form>
       )}
       <div className='posts'>
@@ -129,7 +134,7 @@ export default function UserProfile () {
               <h4 className='postData'>{new Date(post.created_at).toLocaleString()}</h4>
               <h4 className='postContent'>{post.content}</h4>
               <h4 className='postLikes'>Likes: {post.likes}</h4>
-              <button className='likePostButton' onClick={() => handleToggleLike(post._id)}>Like</button>
+              <button className='likePostButton' onClick={() => handleToggleLike(post._id)}><FontAwesomeIcon icon={faHeart} /></button>
               {/* <button className='editPostButton'>Edit</button> */}
               {/* Only show the remove post option if viewing your own post */}
               {activeUser._id === post.user_id && (
@@ -149,6 +154,8 @@ export default function UserProfile () {
             </div>
           ))}
       </div>
+      </div>
+      
     </div>
   )
 }

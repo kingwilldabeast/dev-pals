@@ -1,7 +1,7 @@
 .headerContainer {
   display: flex;
   justify-content: space-between;
-  background-color: #FB8500;
+  background-color: #FFB703;
   padding: 10px 0;
 }
 form.searchBar {
@@ -10,9 +10,20 @@ form.searchBar {
 input.searchBar {
   margin-left: 30px;
   width: 60%;
+  border: none;
   border-radius: 10px 0 0 10px;
 }
 .searchBtn {
+  border: none;
+  padding: 11px;
   border-radius: 0 10px 10px 0;
 }
+.moreBtn {
+  margin-right: 30px;
+}
+.editorBtn {
+  margin-right: 5px;
+}
+
+
 

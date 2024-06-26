@@ -4,3 +4,39 @@
   padding: 0;
   margin: 0;
 }
+.profileImage {
+  margin: 10px 30px 0px 0x;
+  border: 2px solid #FFB703;
+  border-radius: 30px;
+}
+.aboutUser {
+  margin: 10px 0 0 100px;
+}
+.postSection {
+  display: flex;
+  justify-content: space-around;
+}
+.createPost {
+  display: flex;
+  /* width: 50%; */
+  border: 2px solid #000;
+  margin: 100px 0 0 100px;
+  
+}
+.createPost textarea {
+  background-color: #FEFAE0;
+  border: 2px solid #FFB703;
+  color: black;
+}
+.postBtn {
+
+}
+
+.posts {
+  margin-right: 100px;
+  width: 20%;
+  background-color: #FFB703;;
+  border: 2px solid #000;
+  border-radius: 20px;
+  box-shadow: 5px 10px 20px #000;
+}

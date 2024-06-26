@@ -2,8 +2,9 @@ import { useNavigate } from "react-router-dom"
 import { useState, useEffect, useContext } from 'react'
 import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
-
 import '../component-style/header.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
 export default function Header () {
   let navigate = useNavigate()
@@ -69,12 +70,12 @@ export default function Header () {
           onChange={updateTyping}
           required
         />
-        <button className="">Find profile</button>
+        <button className="searchBtn"><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
       </form>
       {/* More Bottons Options */}
       <div className="moreBtn">
-        <button className="editorBtn" onClick={openEditor}>Edit user info</button>
-        <button className="logoutBtn" onClick={logout}>Logout</button>
+        <button className="editorBtn" onClick={openEditor}><FontAwesomeIcon icon={faGear} /></button>
+        <button className="logoutBtn" onClick={logout}><FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
       </div>
     </div>
   )
