@@ -178,7 +178,7 @@ export default function UserProfile () {
   
   return (
     <div className='userProfile'>
-      <Header/>
+      <Header activeUser = {activeUser}/>
       <img className="profileImage" src={profileImg} alt="Profile Image" width={200} />
       <div className='aboutUser'>
         <h2>About {viewedUser.firstname}</h2>
