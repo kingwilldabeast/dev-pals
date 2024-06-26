@@ -43,7 +43,38 @@ button.signupSubmitBtn {
   padding: 10px;
   
 }
+button.backtologinBtn {
+  font-family: "Share Tech Mono", monospace;
+  background-color: #fb8500;
+  width: 20vw;
+  margin-top: 10px;
+  border-radius: 5px;
+  color: #FFF;
+  font-size: 1.2rem;
+  outline: none;
+}
 
+/* Get Started Modal */
+button.gottoprofileBtn{
+  font-family: "Share Tech Mono", monospace;
+  background-color: #fb8500;
+  width: 20vw;
+  margin-top: 10px;
+  border-radius: 5px;
+  color: #FFF;
+  font-size: 1.2rem;
+  outline: none;
+}
+.signup-modal-input{
+  font-family: "Share Tech Mono", monospace;
+  width: 20vw;
+  color: #000;
+}
+.form-control{
+  font-family: "Share Tech Mono", monospace;
+  width: 31vw;
+  color: #000;
+}
 .invalid {
   color: red;
 }
