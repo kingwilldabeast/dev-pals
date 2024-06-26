@@ -2,9 +2,10 @@ import { useContext, useEffect, useState } from 'react'
 import Header from './Header'
 import { useParams, useNavigate } from 'react-router-dom'
 import profileImg from '../assets/profileImg.png'
-import LoggedInUserContext from '../LoggedInUserContext'
+// import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
 import '../component-style/profile.css'
+
 
 export default function UserProfile () {
   
@@ -16,14 +17,15 @@ export default function UserProfile () {
   const [commentText, setCommentText] = useState({})
   const [commentFormVisible, setCommentFormVisible] = useState({})
   const { username } = useParams()
-  const { loggedInUser } = useContext(LoggedInUserContext)
+  // const { loggedInUser } = useContext(LoggedInUserContext)
   const navigate = useNavigate()
+  const loggedInUser = localStorage.getItem('loggedInUser')
 
   useEffect(() => {
-    // if (!loggedInUser) {
-    //   navigate('/')
-    //   return
-    // }
+    if (!loggedInUser) {
+      navigate('/')
+      return
+    }
 
     const fetchData = async () => {
       try {
@@ -50,7 +52,9 @@ export default function UserProfile () {
       }
     }
 
-    fetchData()
+    if (loggedInUser) {
+      fetchData()
+    }
   }, [username, loggedInUser, navigate])
 
   
@@ -156,20 +160,20 @@ export default function UserProfile () {
   }
 
   const handleToggleLikeComment = async (commentId) => {
-    console.log(`Liking comments will be fixed soon! You are trying to like comment with id of ${commentId}`)
-    // console.log(activeUser._id)
-    // const response = await axios.put(`http://localhost:3001/users/${activeUser._id}/likes/${commentId}`)
-    // const updatedComment = response.data
+    // console.log(`Liking comments will be fixed soon! You are trying to like comment with id of ${commentId}`)
+    console.log(loggedInUser)
+    const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/likes/${commentId}`)
+    const updatedComment = response.data
 
-    // setPostComments(postComments.map(comment => 
-    //   comment._id === commentId ? updatedComment : comment
-    // ))
+    setPostComments(postComments.map(comment => 
+      comment._id === commentId ? updatedComment : comment
+    ))
 
-    // if (activeUser.likedComments.includes(commentId)) {
-    //   activeUser.likedComments = activeUser.likedComments.filter(id => id !== commentId)
-    // } else {
-    //   activeUser.likedComments.push(commentId)
-    // }
+    if (activeUser.likedComments.includes(commentId)) {
+      activeUser.likedComments = activeUser.likedComments.filter(id => id !== commentId)
+    } else {
+      activeUser.likedComments.push(commentId)
+    }
   }
   
   return (

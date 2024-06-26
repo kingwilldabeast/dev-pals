@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useState, useEffect, useContext } from 'react'
-import LoggedInUserContext from '../LoggedInUserContext'
+// import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
 
 import '../component-style/header.css'
@@ -8,9 +8,10 @@ import '../component-style/header.css'
 export default function Header () {
   let navigate = useNavigate()
 
-  const {loggedInUser, setLoggedInUser} = useContext(LoggedInUserContext)
+  // const {loggedInUser, setLoggedInUser} = useContext(LoggedInUserContext)
   const [inputInProgress, setInputInProgress] = useState({ searchBar: '' });
   const [profile, setProfile] = useState('');
+  const loggedInUser = localStorage.getItem('loggedInUser')
 
   
   const updateTyping = (e) => {
@@ -43,7 +44,7 @@ export default function Header () {
   }
 
   const logout = () => {
-    setLoggedInUser('')
+    // setLoggedInUser('')
     localStorage.removeItem('loggedInUser')
     navigate('/')
   }
