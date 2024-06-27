@@ -4,3 +4,106 @@
   padding: 0;
   margin: 0;
 }
+.profileImage {
+  margin: 10px 30px 0px 0x;
+  border: 2px solid #FFB703;
+  border-radius: 10px;
+}
+.aboutUser {
+  margin: 40px 40px 0 40px;
+}
+.userInfo {
+  margin-top: 20px;
+}
+.userInfo h2 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+.userInfo h3 {
+  font-size: 1.1rem;
+}
+.postSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.createPost {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 10px 10px;
+  width: 40%;
+  
+}
+.createPost textarea {
+  background-color: #FEFAE0;
+  border: 2px solid;
+  padding: 10px;
+  color: black;
+  font-size: 1.2rem;
+  outline: none;
+}
+.postBtn {
+  font-size: 1.3rem;
+  border-radius: 0 0 10px 10px;
+}
+.posts {
+  margin: 80px 0;
+  width: 40%;
+}
+.post {
+  margin: 0 0 40px;
+  background-color: #FFB703;;
+  border: 2px solid #000;
+  border-radius: 5px;
+  box-shadow: 5px 10px 10px #000;
+}
+.postContent {
+  font-size: 1.4rem;
+  margin: 30px 50px;
+  text-align: left;
+}
+.postLikes{
+  font-size: 1.2rem;
+  margin: 20px 0 40px 0;
+}
+.postData {
+  margin-right: 20px;
+  float: right;
+  font-size: 1rem;
+}
+.likePostButton {
+  color: red;
+}
+.likePostButton, .removePostButton {
+  border-radius: 10%;
+  margin: 0 5px 0 10px;
+  
+}
+.comments {
+  margin: 20px 0 10px 30px;
+  width: 50%;
+}
+.comment {
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+  border-radius: 3px;
+  border: 0 solid #000;
+  background-color: #fb860059;
+}
+.comment h3 {
+  font-size: 1.4rem;
+  margin: 10px 0 0 10px;
+}
+.comment p {
+  margin: 10px 0 0 10px;
+}
+.submitCommentButton {
+  border-radius: 0 10px 10px 0;
+}
+.likeCommentButton {
+  color: red;
+}
+.likeCommentButton, .removeLikeCommentBtn {
+  margin: 0 5px 10px 10px;
+}
