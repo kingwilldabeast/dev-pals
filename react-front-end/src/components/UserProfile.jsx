@@ -238,7 +238,7 @@ export default function UserProfile () {
               {/* Only show the comment form if the comment button has been clicked. Otherwise, show the comment button */}
               {commentFormVisible[post._id] ? (
                 <div>
-                  <input
+                  <input className='replyPost'
                     type="text"
                     value={commentText[post._id] || ''}
                     onChange={(e) => setCommentText({

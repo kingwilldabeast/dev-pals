@@ -91,6 +91,12 @@
   border: 0 solid #000;
   background-color: #fb860059;
 }
+.replyPost  {
+  width: 70%;
+  color: #000;
+  border: none;
+  padding: 10px;
+}
 .comment h3 {
   font-size: 1.4rem;
   margin: 10px 0 0 10px;
