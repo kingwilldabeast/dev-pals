@@ -44,9 +44,31 @@ function GetStartedModal({ show, handleClose }) {
         return
       }
       console.log('Form submitted:', formState);
+
+      const updateNewAccount = async () => {
+ 
+        try {
+          const response = await axios.put(`http://localhost:3001/users/${loggedInUser}`, {
+            firstname: formState.firstname,
+            lastname: formState.lastname,
+            age: formState.age,
+            bio: formState.bio
+          }, {
+         
+          });
+     
+            console.log(`users are ${response.data}`)
+     
+        } catch (error) {
+          console.error("Error:", error)
+        }
+      
+      };
+      updateNewAccount()
   
       handleClose();
       navigate(`/username/${username}`)
+      // window.location.reload()
     };
 
     return (
