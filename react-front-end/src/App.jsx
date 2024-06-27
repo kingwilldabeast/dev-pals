@@ -6,27 +6,27 @@ import Signup from './components/Signup'
 import UserProfile from './components/UserProfile'
 import { useEffect, useState } from 'react'
 import Editor from './components/Editor'
-import LoggedInUserContext from './LoggedInUserContext'
+// import LoggedInUserContext from './LoggedInUserContext'
 // import FriendsList from './components/FriendsList'
 
 function App() {
 
-  const [loggedInUser, setLoggedInUser] = useState('')
+  // const [loggedInUser, setLoggedInUser] = useState('')
 
-  useEffect(() => {
-    const savedUser = localStorage.getItem('loggedInUser')
-    if (savedUser) {
-      setLoggedInUser(savedUser)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const savedUser = localStorage.getItem('loggedInUser')
+  //   if (savedUser) {
+  //     setLoggedInUser(savedUser)
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    console.log(`Current logged in user has the id: ${loggedInUser}`)
-  }, [loggedInUser])
+  // useEffect(() => {
+  //   console.log(`Current logged in user has the id: ${loggedInUser}`)
+  // }, [loggedInUser])
 
   return (
     <>
-      <LoggedInUserContext.Provider value={{loggedInUser, setLoggedInUser}}>
+      {/* <LoggedInUserContext.Provider value={{loggedInUser, setLoggedInUser}}> */}
         <Routes>
           <Route path="/" element={<Login/>}/>
           <Route path="/signup" element={<Signup/>}/>
@@ -35,7 +35,7 @@ function App() {
           {/* <Route path="/userProfile/:userId" element={<UserProfile/>}/> */}
           {/* <Route path="/userProfile/:userId/friends" element={<FriendsList/>}/> */}
         </Routes>
-      </LoggedInUserContext.Provider>
+      {/* </LoggedInUserContext.Provider> */}
     </>
   )
 }
