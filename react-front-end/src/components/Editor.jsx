@@ -1,13 +1,15 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './Header'
 import { useParams, useNavigate } from 'react-router-dom'
-import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
+import '../component-style/editor.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faHeart, faTrashCan, faXmark, faArrowLeft, faCheck} from '@fortawesome/free-solid-svg-icons'
 
 export default function Editor () {
   
     let navigate = useNavigate()
-    const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext)
+    const loggedInUser = localStorage.getItem('loggedInUser')
     const [activeUser, setActiveUser] = useState({})
     const { username } = useParams()
     const [message, setMessage]=useState('')
@@ -29,7 +31,6 @@ export default function Editor () {
   
       const getLoggedInUser = async () => {
         const loggedInUserResponse = await axios.get(`http://localhost:3001/users/usernames/${username}`)
-      //   const loggedInUserResponse = await axios.get(`http://localhost:3001/users/${loggedInUser_ID??}`)
         const loggedInUserData = loggedInUserResponse.data
         setActiveUser(loggedInUserData)
     }
@@ -61,7 +62,7 @@ export default function Editor () {
         };
 
     const logout = () => {
-        setLoggedInUser('')
+        // setLoggedInUser('')
         localStorage.removeItem('loggedInUser')
         navigate('/')
         }
@@ -135,98 +136,83 @@ export default function Editor () {
       
 
   return (
-    <div className='userProfile'>
+    <div className='userProfileEditContainer'>
       <Header/>
-      <div className='aboutUser'>
+      
+      <button className="returnToProfileBtn" type="submit" onClick={cancelAndReturn}>Return to Profile <FontAwesomeIcon icon={faArrowLeft} /></button>
 
-      </div>
-      <button type="submit" onClick={cancelAndReturn}>Cancel</button>
-
-
-      <form onSubmit={handleSubmit}>
-    
-    {/* username */}
-    <div className='usernameContainer'>
-      <input type='text' 
-      id='username' 
-      placeholder='Username' 
-      onChange={handleChange} 
-      value={formState.username} />
-    </div>
-    
-    {/* email */}
-     <div className ='emailContainer'>
-      <input type="text" 
-      id="email" 
-      placeholder='Email' 
-      onChange = {handleChange} 
-      value={formState.email}
-      />
-    </div>
-    
-    {/* password */}
-    <div className='passwordContainer'>
-      <input type='text' 
-      id="password" 
-      placeholder='Password' 
-      onChange = {handleChange} 
-      value = {formState.password} />
-      </div>
-
-    {/* firstname */}
-    <div className='firstnameContainer'>
-      <input type='text' 
-      id="firstname" 
-      placeholder='First name' 
-      onChange = {handleChange} 
-      value = {formState.firstname} />
-      </div>
-
-    {/* lastname */}
-    <div className='lastnameContainer'>
-      <input type='text' 
-      id="lastname" 
-      placeholder='Last name' 
-      onChange = {handleChange} 
-      value = {formState.lastname} />
-    </div>
-
-    {/* age */}
-    <div className='ageContainer'>
-      <input type='text' 
-      id="age" 
-      placeholder='Age' 
-      onChange = {handleChange} 
-      value = {formState.age} />
-    </div>
-
-    {/* location */}
-    <div className='locationContainer'>
-      <input type='text' 
-      id="location" 
-      placeholder='Location' 
-      onChange = {handleChange} 
-      value = {formState.location} />
-    </div>
-
-    {/* profile pic */}
-    <div className='profile-pic-url-Container'>
-      <input type='text' 
-      id="profilePicURL" 
-      placeholder='paste profile link here' 
-      onChange = {handleChange} 
-      value = {formState.profilePicURL} />
-    </div>
-
-
-     
-    <button type="submit">Confirm changes</button>
-</form>
-
-    <button type="submit" onClick={deleteAccount}>Delete Account</button>
-
-
-
+      <form className='editFormContainer' onSubmit={handleSubmit}>
+      
+        {/* username */}
+        <div className='usernameContainer'>
+          <input type='text' 
+          id='username' 
+          placeholder='Username' 
+          onChange={handleChange} 
+          value={formState.username} />
+        </div>
+        {/* email */}
+        <div className ='emailContainer'>
+          <input type="text" 
+          id="email" 
+          placeholder='Email' 
+          onChange = {handleChange} 
+          value={formState.email} />
+        </div>
+        {/* password */}
+        <div className='passwordContainer'>
+          <input type='text' 
+          id="password" 
+          placeholder='Password' 
+          onChange = {handleChange} 
+          value = {formState.password} />
+        </div>
+        {/* firstname */}
+        <div className='firstnameContainer'>
+          <input type='text' 
+          id="firstname" 
+          placeholder='First name' 
+          onChange = {handleChange} 
+          value = {formState.firstname} />
+        </div>
+        {/* lastname */}
+        <div className='lastnameContainer'>
+          <input type='text' 
+          id="lastname" 
+          placeholder='Last name' 
+          onChange = {handleChange} 
+          value = {formState.lastname} />
+        </div>
+        {/* age */}
+        <div className='ageContainer'>
+          <input type='text' 
+          id="age" 
+          placeholder='Age' 
+          onChange = {handleChange} 
+          value = {formState.age} />
+        </div>
+        {/* location */}
+        <div className='locationContainer'>
+          <input type='text' 
+          id="location" 
+          placeholder='Location' 
+          onChange = {handleChange} 
+          value = {formState.location} />
+        </div>
+        {/* profile pic */}
+        <div className='profile-pic-url-Container'>
+          <input type='text' 
+          id="profilePicURL" 
+          placeholder='paste profile link here' 
+          onChange = {handleChange} 
+          value = {formState.profilePicURL} />
+        </div>
+        <div className="editorFormBtn">
+          <button className='editConfimBtn' type="submit">Confirm <FontAwesomeIcon icon={faCheck} /></button>
+          <button className='editDeleteBtn' type="submit" onClick={deleteAccount}>Delete Account <FontAwesomeIcon icon={faTrashCan} /></button>
+        </div>
+        
+      </form>
     </div>
   )
 }

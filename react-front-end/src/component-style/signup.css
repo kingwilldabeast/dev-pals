@@ -9,6 +9,7 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 10px 10px 10px #0000008a; 
+  margin-top: 200px;
 }
 .signupTitle {
   color: #FB8500;
@@ -41,9 +42,50 @@ button.signupSubmitBtn {
   color: #FFF;
   font-size: 1.5rem;
   padding: 10px;
-  
+  outline: none;
+}
+button.signupSubmitBtn:hover {
+  background-color: #FBB703;
+  outline: none;
+  border: none;
+}
+button.backtologinBtn {
+  font-family: "Share Tech Mono", monospace;
+  background-color: #fb8500;
+  width: 20vw;
+  margin-top: 10px;
+  border-radius: 5px;
+  color: #FFF;
+  font-size: 1.2rem;
+  outline: none;
+}
+button.backtologinBtn:hover {
+  background-color: #FBB703;
+  outline: none;
+  border: none;
 }
 
+/* Get Started Modal */
+button.gottoprofileBtn{
+  font-family: "Share Tech Mono", monospace;
+  background-color: #fb8500;
+  width: 20vw;
+  margin-top: 10px;
+  border-radius: 5px;
+  color: #FFF;
+  font-size: 1.2rem;
+  outline: none;
+}
+.signup-modal-input{
+  font-family: "Share Tech Mono", monospace;
+  width: 20vw;
+  color: #000;
+}
+.form-control{
+  font-family: "Share Tech Mono", monospace;
+  width: 31vw;
+  color: #000;
+}
 .invalid {
   color: red;
 }

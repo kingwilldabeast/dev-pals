@@ -17,7 +17,6 @@ export default function Login () {
   const [formState, setFormState] = useState(initialState)
   const [users, setUsers] = useState([])
   const navigate = useNavigate()
-  // const { setLoggedInUser } = useContext(LoggedInUserContext)
 
   useEffect(() => {
     if (loggedInUser) {

@@ -1,12 +1,11 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from './Header'
 import { useParams, useNavigate } from 'react-router-dom'
 import profileImg from '../assets/profileImg.png'
-// import LoggedInUserContext from '../LoggedInUserContext'
 import axios from 'axios'
 import '../component-style/profile.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faHeart, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 export default function UserProfile () {
   
@@ -18,7 +17,6 @@ export default function UserProfile () {
   const [commentText, setCommentText] = useState({})
   const [commentFormVisible, setCommentFormVisible] = useState({})
   const { username } = useParams()
-  // const { loggedInUser } = useContext(LoggedInUserContext)
   const navigate = useNavigate()
   const loggedInUser = localStorage.getItem('loggedInUser')
 
@@ -57,7 +55,6 @@ export default function UserProfile () {
       fetchData()
     }
   }, [username, loggedInUser, navigate])
-
   
   const getPostComments = async (postId) => {
     try {
@@ -143,7 +140,7 @@ export default function UserProfile () {
 
   const handleToggleLikePost = async (postId) => {
     // console.log(activeUser._id)
-    const response = await axios.put(`http://localhost:3001/users/${activeUser._id}/likes/${postId}`)
+    const response = await axios.put(`http://localhost:3001/users/${activeUser._id}/postLikes/${postId}`)
     const updatedPost = response.data
 
     // I need to update the local state of posts to reflect the new amount of likes
@@ -160,32 +157,46 @@ export default function UserProfile () {
     }
   }
 
-  const handleToggleLikeComment = async (commentId) => {
-    // console.log(`Liking comments will be fixed soon! You are trying to like comment with id of ${commentId}`)
-    console.log(loggedInUser)
-    const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/likes/${commentId}`)
-    const updatedComment = response.data
+  const handleToggleLikeComment = async (commentId, postId) => {
+    try {
+      const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/commentLikes/${commentId}`)
+      const updatedComment = response.data.comment
+      // console.log(updatedComment)
 
-    setPostComments(postComments.map(comment => 
-      comment._id === commentId ? updatedComment : comment
-    ))
+      // This was tricky because postComments is a object where eah key is a postId and its value is an array of comments, meaning I couldn't simply map over the array like I did for posts. My brain broke, and there was no way I could have figured this out on my own given my current knowledge, so this is almost straight from ChatGPT. I can understand that we are needing to map over each comment in order to find the one with the correct comment._id, and then update it's local state to the state after the axios call. However, I need to learn the syntax of accessing this postComments object in the correct way, as ChatGPT helped me with here.
+      setPostComments(prevState => ({
+        ...prevState,
+        [postId]: prevState[postId].map(comment =>
+          // Had to add additional logic to ensure the comment maintains it's user_id
+            comment._id === commentId ? { ...comment, ...updatedComment, user_id: comment.user_id } : comment
+        )
+      }))
 
-    if (activeUser.likedComments.includes(commentId)) {
-      activeUser.likedComments = activeUser.likedComments.filter(id => id !== commentId)
-    } else {
-      activeUser.likedComments.push(commentId)
+      setActiveUser(prevState => {
+        const likedComments = prevState.likedComments.includes(commentId)
+            ? prevState.likedComments.filter(id => id !== commentId)
+            : [...prevState.likedComments, commentId]
+        return {
+            ...prevState,
+            likedComments
+        }
+      })
+    } catch (error) {
+        console.error('Error toggling like comment:', error);
     }
   }
   
   return (
     <div className='userProfile'>
-      <Header/>
-      
+      <Header activeUser = {activeUser}/>
       <div className='aboutUser'>
-      <img className="profileImage" src={profileImg} alt="Profile Image" width={250} />
-        <h2>About {viewedUser.firstname}</h2>
-        <h3>{viewedUser.age} Years Old</h3>
-        <h3>Lives in {viewedUser.location}</h3>
+        <img className="profileImage" src={profileImg} alt="Profile Image" width={150} />
+        <div className="userInfo">
+          <h2 >{viewedUser.firstname} {viewedUser.lastname}</h2>
+          <h3>Software Engineer</h3>
+          <h3>Age {viewedUser.age}</h3>
+          <h3>{viewedUser.location}</h3>
+        </div>
       </div>
 
       {/* Only show createNewPost form if viewing your own page */}
@@ -202,14 +213,24 @@ export default function UserProfile () {
           <button className='postBtn' type='submit'>Post  <FontAwesomeIcon icon={faPenToSquare} /></button>
         </form>
       )}
-
+        
       {/* Map all of the posts for the viewedUser */}
       <div className='posts'>
         {posts.map(post => (
             <div className='post' key={post._id}>
-              <h4 className='postData'>{new Date(post.created_at).toLocaleString()}</h4>
+              
               <h4 className='postContent'>{post.content}</h4>
-
+              <h4 className='postLikes'>Likes: {post.likes}</h4>
+              <h4 className='postData'>{new Date(post.created_at).toLocaleString()}</h4>
+              <button className='likePostButton' onClick={() => handleToggleLikePost(post._id)}><FontAwesomeIcon icon={faHeart} /></button>
+              
+              {/* <button className='editPostButton'>Edit</button> */}
+              
+              {/* Only show the remove post option if viewing your own post */}
+              {activeUser._id === post.user_id && (
+                <button className='removePostButton' onClick={() => handleRemovePost(post._id)}><FontAwesomeIcon icon={faTrashCan} /></button>
+              )}
+                
               {/* Only show the comment form if the comment button has been clicked. Otherwise, show the comment button */}
               {commentFormVisible[post._id] ? (
                 <div>
@@ -222,47 +243,43 @@ export default function UserProfile () {
                     })}
                     placeholder='Write a comment'
                   />
-                  <button className='submitCommentButton' onClick={() => handleCommentOnPost(post._id, commentText[post._id])}>Submit Comment</button>
+                  <button className='submitCommentButton' onClick={() => handleCommentOnPost(post._id, commentText[post._id])}>Reply <FontAwesomeIcon icon={faPenToSquare} /></button>
                   <button className='cancelCommentButton' onClick={() => setCommentFormVisible({
                     ...commentFormVisible,
                     [post._id]: false
-                  })}>Cancel</button>
+                  })}><FontAwesomeIcon icon={faXmark} /></button>
+                  
                 </div>
               ) : (
                 <button className='commentButton' onClick={() => setCommentFormVisible({
                   ...commentFormVisible,
                   [post._id]: true
-                })}>Comment</button>
+                })}>Reply <FontAwesomeIcon icon={faPenToSquare} /></button>
+                
               )}
-
-              <h4 className='postLikes'>Likes: {post.likes}</h4>
-              <button className='likePostButton' onClick={() => handleToggleLikePost(post._id)}><FontAwesomeIcon icon={faHeart} /></button>
-              {/* <button className='editPostButton'>Edit</button> */}
-
-              {/* Only show the remove post option if viewing your own post */}
-              {activeUser._id === post.user_id && (
-                <button className='removePostButton' onClick={() => handleRemovePost(post._id)}>Remove</button>
-              )}
-
+              
               {/* Map all of the comments for each post */}
               <div className='comments'>
-              {postComments[post._id]?.map(comment => (
-                <div className='comment' key={comment._id}>
-                  {/* <img className='commentUserImg' src={comment.user_id.profilePicURL}/> */}
-                  <p className='commentUsername'>{`${comment.user_id.username}`}</p>
-                  <p className='commentContent'>{comment.content}</p>
-                  <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
-                  <p className='commentLikes'>Likes: {comment.likes}</p>
-                  <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id)}>Like</button>
-                  {/* <button className='editCommentButton'>Edit</button> */}
+                {postComments[post._id]?.map(comment => (
+                  <div className='comment' key={comment._id}>
+                    {/* <img className='commentUserImg' src={comment.user_id.profilePicURL}/> */}
+                    <h3 className='commentUsername'>{`${comment.user_id.username}`}</h3>
+                    <p className='commentContent'>{comment.content}</p>
+                    
+                    <p className='commentLikes'>Likes: {comment.likes}</p>
+                    <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
+                    <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id, post._id)}><FontAwesomeIcon icon={faHeart} /></button>
+                    {/* <button className='editCommentButton'>Edit</button> */}
 
-                  {/* Only show the remove comment option if it is the logged in user's comment */}
-                  {comment.user_id._id === activeUser._id && (
-                    <button onClick={() => handleRemoveComment(comment._id, post._id)}>Remove</button>
-                  )}
-                </div>
-              ))}
-            </div>
+                    {/* Only show the remove comment option if it is the logged in user's comment */}
+                    {comment.user_id._id === activeUser._id && (
+                      <button className="removeLikeCommentBtn" onClick={() => handleRemoveComment(comment._id, post._id)}><FontAwesomeIcon icon={faTrashCan} /></button>
+                    )}
+                  </div>
+                ))}
+                
+              </div>
+              
           </div>
         ))}
       </div>
