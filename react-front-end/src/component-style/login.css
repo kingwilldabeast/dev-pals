@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 200px;
 }
 .loginTitleContainer {
   margin-right: 200px;
@@ -70,7 +71,7 @@ button.submitBtn:focus {
   outline: none;
 }
 button.submitBtn:hover {
-  background-color: #0084ff;
+  background-color: #FFB703;
 }
 .signupBtnContainer, h4{
   font-family: "Share Tech Mono", monospace;
@@ -90,7 +91,9 @@ hr {
   font-size: 1.2rem;
 }
 .signupBtnContainer button:hover {
-  background-color: #0084ff;
+  background-color: #FFB703;
+  outline: none;
+  border: none;
 }
 .signupBtnContainer button:focus {
   outline: none;
