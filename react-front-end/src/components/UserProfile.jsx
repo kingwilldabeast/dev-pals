@@ -4,7 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import profileImg from '../assets/profileImg.png'
 import axios from 'axios'
 import '../component-style/profile.css'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faHeart, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 export default function UserProfile () {
   
@@ -189,23 +190,51 @@ export default function UserProfile () {
     }
   }
 
-  const addFriend = async (userId) => {
+  const sendFriendRequest = async (requestUserId) => {
     try {
-        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/addFriend/${userId}`)
-        console.log(response.data)
+      const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/sendFriendRequest/${requestUserId}`)
+      console.log(response.data)
+      setViewedUser(response.data)
     } catch (error) {
-        console.error('Error adding friend:', error)
+      console.error('Error sending friend request:', error)
     }
   }
 
-  // const sendFriendRequest = async (userId) => {
-  //   try {
-  //     const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/sendFriendRequest/${userId}`)
-  //     console.log(response.data)
-  //   } catch (error) {
-  //     console.error('Error sending friend request:', error)
-  //   }
-  // }
+  const unfriend = async (friendUserId) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/unfriend/${friendUserId}`)
+        console.log(response.data)
+        setActiveUser(response.data.loggedIn)
+    } catch (error) {
+        console.error('Error unfriending:', error)
+    }
+  }
+
+  const cancelFriendRequest = async (friendUserId) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/cancelFriendRequest/${friendUserId}`)
+        console.log(response.data)
+        setViewedUser(response.data)
+    } catch (error) {
+        console.error('Error unfriending:', error)
+    }
+  }
+
+  const renderFriendButton = () => {
+    if (activeUser.username === viewedUser.username) {
+        return null
+    }
+
+    if (activeUser.friendsList.includes(viewedUser._id)) {
+        return <button className='addFriend' onClick={() => unfriend(viewedUser._id)}>Unfriend</button>
+    }
+
+    if (viewedUser.friendRequests.includes(activeUser._id)) {
+        return <button className='addFriend' onClick={() => cancelFriendRequest(viewedUser._id)}>Cancel Friend Request</button>
+    }
+
+    return <button className='addFriend' onClick={() => sendFriendRequest(viewedUser._id)}>Add Friend</button>
+  }
 
   const navigateToUser = (username) => {
     navigate(`/username/${username}`)
@@ -214,39 +243,51 @@ export default function UserProfile () {
   return (
     <div className='userProfile'>
       <Header activeUser = {activeUser}/>
-      <img className="profileImage" src={profileImg} alt="Profile Image" width={200} />
 
-      {/* Only show Add Friend button if not viewing your own page */}
-      {activeUser.username !== viewedUser.username && (
-          <button className='addFriend'onClick={() => addFriend(viewedUser._id)}>Add Friend</button>
-        )}
+      {renderFriendButton()}
 
       <div className='aboutUser'>
-        <h2>About {viewedUser.firstname}</h2>
-        <h3>{viewedUser.age} Years Old</h3>
-        <h3>Lives in {viewedUser.location}</h3>
+        <img className="profileImage" src={profileImg} alt="Profile Image" width={150} />
+        <div className="userInfo">
+          <h2 >{viewedUser.firstname} {viewedUser.lastname}</h2>
+          <h3>Software Engineer</h3>
+          <h3>Age {viewedUser.age}</h3>
+          <h3>{viewedUser.location}</h3>
+        </div>
       </div>
 
       {/* Only show createNewPost form if viewing your own page */}
+      <div className="postSection">
       {activeUser.username === viewedUser.username && (
         <form className='createPost' onSubmit={handleSubmitPost}>
-          <input 
-            type="textarea"
+          <textarea 
+            rows="4"
+            cols="40"
             value={postText} 
             onChange={(e) => setPostText(e.target.value)}
             placeholder='Write your next post here'
           />
-          <button className='postButton' type='submit'>Post</button>
+          <button className='postBtn' type='submit'>Post  <FontAwesomeIcon icon={faPenToSquare} /></button>
         </form>
       )}
-
+        
       {/* Map all of the posts for the viewedUser */}
       <div className='posts'>
         {posts.map(post => (
             <div className='post' key={post._id}>
-              <h4 className='postData'>{new Date(post.created_at).toLocaleString()}</h4>
+              
               <h4 className='postContent'>{post.content}</h4>
-
+              <h4 className='postLikes'>Likes: {post.likes}</h4>
+              <h4 className='postData'>{new Date(post.created_at).toLocaleString()}</h4>
+              <button className='likePostButton' onClick={() => handleToggleLikePost(post._id)}><FontAwesomeIcon icon={faHeart} /></button>
+              
+              {/* <button className='editPostButton'>Edit</button> */}
+              
+              {/* Only show the remove post option if viewing your own post */}
+              {activeUser._id === post.user_id && (
+                <button className='removePostButton' onClick={() => handleRemovePost(post._id)}><FontAwesomeIcon icon={faTrashCan} /></button>
+              )}
+                
               {/* Only show the comment form if the comment button has been clicked. Otherwise, show the comment button */}
               {commentFormVisible[post._id] ? (
                 <form>
@@ -259,50 +300,48 @@ export default function UserProfile () {
                     })}
                     placeholder='Write a comment'
                   />
-                  <button className='submitCommentButton' onClick={() => handleCommentOnPost(post._id, commentText[post._id])}>Submit Comment</button>
+                  <button className='submitCommentButton' onClick={() => handleCommentOnPost(post._id, commentText[post._id])}>Reply <FontAwesomeIcon icon={faPenToSquare} /></button>
                   <button className='cancelCommentButton' onClick={() => setCommentFormVisible({
                     ...commentFormVisible,
                     [post._id]: false
-                  })}>Cancel</button>
+                  })}><FontAwesomeIcon icon={faXmark} /></button>
+                  
                 </form>
               ) : (
                 <button className='commentButton' onClick={() => setCommentFormVisible({
                   ...commentFormVisible,
                   [post._id]: true
-                })}>Comment</button>
+                })}>Reply <FontAwesomeIcon icon={faPenToSquare} /></button>
+                
               )}
-
-              <h4 className='postLikes'>Likes: {post.likes}</h4>
-              <button className='likePostButton' onClick={() => handleToggleLikePost(post._id)}>Like</button>
-              {/* <button className='editPostButton'>Edit</button> */}
-
-              {/* Only show the remove post option if viewing your own post */}
-              {activeUser._id === post.user_id && (
-                <button className='removePostButton' onClick={() => handleRemovePost(post._id)}>Remove</button>
-              )}
-
+              
               {/* Map all of the comments for each post */}
               <div className='comments'>
-              {postComments[post._id]?.map(comment => (
-                <div className='comment' key={comment._id}>
-                  {/* <img className='commentUserImg' src={comment.user_id.profilePicURL}/> */}
-                  <p className='commentUsername' onClick={() => navigateToUser(comment.user_id.username)}>{`${comment.user_id.username}`}</p>
-                  <p className='commentContent'>{comment.content}</p>
-                  <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
-                  <p className='commentLikes'>Likes: {comment.likes}</p>
-                  <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id, post._id)}>Like</button>
-                  {/* <button className='editCommentButton'>Edit</button> */}
+                {postComments[post._id]?.map(comment => (
+                  <div className='comment' key={comment._id}>
+                    {/* <img className='commentUserImg' src={comment.user_id.profilePicURL}/> */}
+                    <h3 className='commentUsername' onClick={() => navigateToUser(comment.user_id.username)}>{`${comment.user_id.username}`}</h3>
+                    <p className='commentContent'>{comment.content}</p>
+                    
+                    <p className='commentLikes'>Likes: {comment.likes}</p>
+                    <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
+                    <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id, post._id)}><FontAwesomeIcon icon={faHeart} /></button>
+                    {/* <button className='editCommentButton'>Edit</button> */}
 
-                  {/* Only show the remove comment option if it is the logged in user's comment */}
-                  {comment.user_id._id === activeUser._id && (
-                    <button onClick={() => handleRemoveComment(comment._id, post._id)}>Remove</button>
-                  )}
-                </div>
-              ))}
-            </div>
-            </div>
-          ))}
+                    {/* Only show the remove comment option if it is the logged in user's comment */}
+                    {comment.user_id._id === activeUser._id && (
+                      <button className="removeLikeCommentBtn" onClick={() => handleRemoveComment(comment._id, post._id)}><FontAwesomeIcon icon={faTrashCan} /></button>
+                    )}
+                  </div>
+                ))}
+                
+              </div>
+              
+          </div>
+        ))}
       </div>
+      </div>
+      
     </div>
   )
 }

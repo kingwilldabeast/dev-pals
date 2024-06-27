@@ -34,9 +34,12 @@ const getUserById = async (req, res) => {
 const getFriendsByUserId = async (req, res) => {
     try {
         const { id } = req.params
-        const singleObject = await User.findById(id).populate('friendsList')
-        if (singleObject) {
-            return res.json(singleObject)
+        const user = await User.findById(id).populate('friendsList', 'username profilePicURL').populate('friendRequests', 'username profilePicURL')
+        if (user) {
+            return res.json({
+                friendsList: user.friendsList,
+                friendRequests: user.friendRequests
+            });
         }
         return res.status(404).send(`That user doesn't exist`)
     } catch (error) {
@@ -194,52 +197,102 @@ const toggleLikeComment = async (req, res) => {
     }
 }
 
-const addFriend = async (req, res) => {
+const sendFriendRequest = async (req,res) => {
     try {
-        const { loggedInUser, userId } = req.params
+        const { loggedInUser, requestedUser } = req.params
 
-        const user = await User.findById(loggedInUser)
+        const sender = await User.findById(loggedInUser)
+        const receiver = await User.findById(requestedUser)
 
-        if (!user) {
-            return res.status(404).send('Logged in user not found')
+        if (!sender || !receiver) {
+            return res.status(404).json({ error: 'User not found' })
         }
 
-        if (!user.friendsList.includes(userId)) {
-            user.friendsList.push(userId)
-            await user.save()
+        if (!receiver.friendRequests.includes(loggedInUser)) {
+            receiver.friendRequests.push(loggedInUser)
+            await receiver.save()
         }
 
-        return res.status(200).json(user)
+        return res.status(200).json(receiver)
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+const acceptFriendRequest  = async (req, res) => {
+    try {
+        const { loggedInUser, requestingUser } = req.params
+
+        const loggedIn = await User.findById(loggedInUser)
+        const requester = await User.findById(requestingUser)
+
+        if (!loggedIn || !requester) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+
+        if (loggedIn.friendRequests.includes(requestingUser)) {
+            loggedIn.friendRequests.pull(requestingUser)
+            loggedIn.friendsList.push(requestingUser)
+            requester.friendsList.push(loggedInUser)
+            await loggedIn.save()
+            await requester.save()
+        }
+
+        res.status(200).json({
+            loggedIn: loggedIn,
+            requester
+        })
     } catch (error) {
         return res.status(500).send(error.message)
     }
 }
 
-// const sendFriendRequest = async (req,res) => {
-//     try {
-//         const { loggedInUser, requestedUser } = req.params
+const unfriend = async (req, res) => {
+    try {
+        const { loggedInUser, friendUserId } = req.params
 
-//         const loggedIn = await User.findById(loggedInUser)
-//         const requested = await User.findById(requestedUser)
+        const user = await User.findById(loggedInUser)
+        const friend = await User.findById(friendUserId)
 
-//         if (!loggedIn) {
-//             return res.status(404).send('Logged in user not found')
-//         }
+        if (!user || !friend) {
+            return res.status(404).json({ error: 'User not found' })
+        }
 
-//         if (!requested) {
-//             return res.status(404).send('Requested user not found')
-//         }
+        user.friendsList.pull(friendUserId)
+        friend.friendsList.pull(loggedInUser)
+        await user.save()
+        await friend.save()
 
-//         if (!loggedIn.friendsList.includes(requested)) {
-//             requested.friendRequests.push(loggedIn)
-//             await requested.save()
-//         }
+        res.status(200).json({
+            loggedIn: user,
+            friend
+        })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
 
-//         return res.status(200).json(requested)
-//     } catch (error) {
-//         return res.status(500).send(error.message)
-//     }
-// }
+const cancelFriendRequest = async (req, res) => {
+    try {
+        const { loggedInUser, requestedFriendUserId } = req.params
+
+        const user = await User.findById(loggedInUser)
+        const requestedFriend = await User.findById(requestedFriendUserId)
+
+        if (!user || !requestedFriend) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+
+        requestedFriend.friendRequests.pull(loggedInUser)
+        await requestedFriend.save()
+
+        res.status(200).json({
+            loggedIn: user,
+            requestedFriend
+        })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
 
 module.exports = {
     getAllUsers, 
@@ -252,6 +305,8 @@ module.exports = {
     getUserByUsername,
     getUserIdByUsername,
     getFriendsByUserId,
-    addFriend,
-    // sendFriendRequest
+    acceptFriendRequest,
+    sendFriendRequest,
+    unfriend,
+    cancelFriendRequest
 }
