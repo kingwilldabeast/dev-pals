@@ -40,7 +40,7 @@ const getPostsByUsername = async (req, res) => {
             return res.status(404).send("User not found");
         }
 
-        const userPosts = await Post.find({ user_id: user._id })
+        const userPosts = await Post.find({ user_id: user._id }).sort({ created_at: -1 })
         return res.status(200).json(userPosts)
     } catch (error) {
         return res.status(500).send(error.message)
