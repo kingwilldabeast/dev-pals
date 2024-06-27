@@ -184,6 +184,10 @@ export default function UserProfile () {
         console.error('Error toggling like comment:', error);
     }
   }
+
+  const navigateToUser = (username) => {
+    navigate(`/username/${username}`)
+  }
   
   return (
     <div className='userProfile'>
@@ -254,7 +258,7 @@ export default function UserProfile () {
               {postComments[post._id]?.map(comment => (
                 <div className='comment' key={comment._id}>
                   {/* <img className='commentUserImg' src={comment.user_id.profilePicURL}/> */}
-                  <p className='commentUsername'>{`${comment.user_id.username}`}</p>
+                  <p className='commentUsername' onClick={() => navigateToUser(comment.user_id.username)}>{`${comment.user_id.username}`}</p>
                   <p className='commentContent'>{comment.content}</p>
                   <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
                   <p className='commentLikes'>Likes: {comment.likes}</p>

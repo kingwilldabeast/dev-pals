@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-// import LoggedInUserContext from '../LoggedInUserContext'
 import '../component-style/login.css'
 
 
@@ -43,7 +42,6 @@ export default function Login () {
     try {
       const response = await axios.get(`http://localhost:3001/users/username/${username}`)
       
-      // setLoggedInUser(response.data._id)
       localStorage.setItem('loggedInUser', response.data._id)
       navigate(`/username/${username}`)
     } catch (error) {

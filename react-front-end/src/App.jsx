@@ -1,5 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css'
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import './component-style/profile.css'
@@ -18,7 +17,6 @@ function App() {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/username/:username" element={<UserProfile/>}/>
         <Route path="/username/edit/:username" element={<Editor/>}/>
-        {/* <Route path="/userProfile/:userId" element={<UserProfile/>}/> */}
         {/* <Route path="/userProfile/:userId/friends" element={<FriendsList/>}/> */}
       </Routes>
     </>
