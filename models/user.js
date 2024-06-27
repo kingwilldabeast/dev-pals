@@ -15,7 +15,9 @@ const UserSchema = new Schema(
         location: {type: String},
         profilePicURL: {type: String},
         likedPosts: [{ type: Schema.Types.ObjectId, ref:'Post' }],
-        likedComments: [{ type: Schema.Types.ObjectId, ref:'Comment' }]
+        likedComments: [{ type: Schema.Types.ObjectId, ref:'Comment' }],
+        friendsList: [{ type: Schema.Types.ObjectId, ref:'User' }],
+        friendRequests: [{ type: Schema.Types.ObjectId, ref:'User' }]
     },
     {timestamps: true}
 

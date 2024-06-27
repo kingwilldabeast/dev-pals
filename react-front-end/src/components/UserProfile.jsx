@@ -92,7 +92,11 @@ export default function UserProfile () {
     setPostText('')
   }
 
-  const handleCommentOnPost = async (postId, commentContent) => {
+  const handleCommentOnPost = async (postId, commentContent, e) => {
+    if(e) {
+      e.preventDefault()
+    }
+
     // This is to avoid console errors when a comment is submitted with no value
     if (!commentContent || commentContent.trim() === '') {
       alert('Please input a comment before submitting')
@@ -185,6 +189,24 @@ export default function UserProfile () {
     }
   }
 
+  const addFriend = async (userId) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/addFriend/${userId}`)
+        console.log(response.data)
+    } catch (error) {
+        console.error('Error adding friend:', error)
+    }
+  }
+
+  // const sendFriendRequest = async (userId) => {
+  //   try {
+  //     const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/sendFriendRequest/${userId}`)
+  //     console.log(response.data)
+  //   } catch (error) {
+  //     console.error('Error sending friend request:', error)
+  //   }
+  // }
+
   const navigateToUser = (username) => {
     navigate(`/username/${username}`)
   }
@@ -193,6 +215,12 @@ export default function UserProfile () {
     <div className='userProfile'>
       <Header activeUser = {activeUser}/>
       <img className="profileImage" src={profileImg} alt="Profile Image" width={200} />
+
+      {/* Only show Add Friend button if not viewing your own page */}
+      {activeUser.username !== viewedUser.username && (
+          <button className='addFriend'onClick={() => addFriend(viewedUser._id)}>Add Friend</button>
+        )}
+
       <div className='aboutUser'>
         <h2>About {viewedUser.firstname}</h2>
         <h3>{viewedUser.age} Years Old</h3>
@@ -221,7 +249,7 @@ export default function UserProfile () {
 
               {/* Only show the comment form if the comment button has been clicked. Otherwise, show the comment button */}
               {commentFormVisible[post._id] ? (
-                <div>
+                <form>
                   <input
                     type="text"
                     value={commentText[post._id] || ''}
@@ -236,7 +264,7 @@ export default function UserProfile () {
                     ...commentFormVisible,
                     [post._id]: false
                   })}>Cancel</button>
-                </div>
+                </form>
               ) : (
                 <button className='commentButton' onClick={() => setCommentFormVisible({
                   ...commentFormVisible,

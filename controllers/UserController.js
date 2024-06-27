@@ -31,6 +31,22 @@ const getUserById = async (req, res) => {
     }
 }
 
+const getFriendsByUserId = async (req, res) => {
+    try {
+        const { id } = req.params
+        const singleObject = await User.findById(id).populate('friendsList')
+        if (singleObject) {
+            return res.json(singleObject)
+        }
+        return res.status(404).send(`That user doesn't exist`)
+    } catch (error) {
+        if (error.name === 'CastError' && error.kind === 'ObjectId') {
+            return res.status(404).send(`That user doesn't exist`)
+        }
+        return res.status(500).send(error.message)
+    }
+}
+
 const getUserByUsername = async (req, res) => {
     const { username } = req.params
     const regex = new RegExp(username, 'i');
@@ -178,6 +194,53 @@ const toggleLikeComment = async (req, res) => {
     }
 }
 
+const addFriend = async (req, res) => {
+    try {
+        const { loggedInUser, userId } = req.params
+
+        const user = await User.findById(loggedInUser)
+
+        if (!user) {
+            return res.status(404).send('Logged in user not found')
+        }
+
+        if (!user.friendsList.includes(userId)) {
+            user.friendsList.push(userId)
+            await user.save()
+        }
+
+        return res.status(200).json(user)
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
+// const sendFriendRequest = async (req,res) => {
+//     try {
+//         const { loggedInUser, requestedUser } = req.params
+
+//         const loggedIn = await User.findById(loggedInUser)
+//         const requested = await User.findById(requestedUser)
+
+//         if (!loggedIn) {
+//             return res.status(404).send('Logged in user not found')
+//         }
+
+//         if (!requested) {
+//             return res.status(404).send('Requested user not found')
+//         }
+
+//         if (!loggedIn.friendsList.includes(requested)) {
+//             requested.friendRequests.push(loggedIn)
+//             await requested.save()
+//         }
+
+//         return res.status(200).json(requested)
+//     } catch (error) {
+//         return res.status(500).send(error.message)
+//     }
+// }
+
 module.exports = {
     getAllUsers, 
     getUserById, 
@@ -187,5 +250,8 @@ module.exports = {
     toggleLikePost,
     toggleLikeComment,
     getUserByUsername,
-    getUserIdByUsername
+    getUserIdByUsername,
+    getFriendsByUserId,
+    addFriend,
+    // sendFriendRequest
 }

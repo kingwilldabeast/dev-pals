@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
@@ -40,6 +40,10 @@ export default function Header (props) {
     navigate(`/username/edit/${activeUser.username}`);
   }
 
+  const openFriendsList = (e) => {
+    navigate(`/username/${activeUser.username}/friends`);
+  }
+
   const logout = () => {
     localStorage.removeItem('loggedInUser')
     navigate('/')
@@ -55,7 +59,7 @@ export default function Header (props) {
 
   return (
     <div className="headerContainer" >
-      {/* <p>{`Welcome ${loggedInUser.username}`}</p> */}
+      <Link to={'/'}><button>Home</button></Link>
       {/* Search Bar */}
       <form className="searchBar" onSubmit={handleSubmit}>
         <input className="searchBar"
@@ -70,6 +74,7 @@ export default function Header (props) {
       </form>
       {/* More Bottons Options */}
       <div className="moreBtn">
+      <button className="friendsBtn" onClick={openFriendsList}>Friends</button>
         <button className="editorBtn" onClick={openEditor}>Edit user info</button>
         <button className="logoutBtn" onClick={logout}>Logout</button>
       </div>
