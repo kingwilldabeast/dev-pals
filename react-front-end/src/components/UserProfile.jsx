@@ -221,20 +221,35 @@ export default function UserProfile () {
     }
   }
 
+  const acceptFriendRequest = async (requestingUserId) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/acceptFriendRequest/${requestingUserId}`)
+        console.log(response.data.requester)
+        setViewedUser(response.data.requester)
+    } catch (error) {
+        console.error('Error accepting friend request:', error)
+    }
+  }
+
   const renderFriendButton = () => {
     if (activeUser.username === viewedUser.username) {
         return null
     }
   // This fixed an issue where activeUser.friendsList was undefined sometimes after pressing the button
-    const friendsList = activeUser.friendsList || []
-    const friendRequests = viewedUser.friendRequests || []
+    const activeUserFriendsList = activeUser.friendsList || []
+    const activeUserFriendRequests = activeUser.friendRequests || []
+    const viewedUserFriendRequests = viewedUser.friendRequests || []
 
-    if (friendsList.includes(viewedUser._id)) {
+    if (activeUserFriendsList.includes(viewedUser._id)) {
         return <button className='addFriend' onClick={() => unfriend(viewedUser._id)}>Unfriend</button>
     }
 
-    if (friendRequests.includes(activeUser._id)) {
+    if (viewedUserFriendRequests.includes(activeUser._id)) {
         return <button className='addFriend' onClick={() => cancelFriendRequest(viewedUser._id)}>Cancel Friend Request</button>
+    }
+
+    if (activeUserFriendRequests.includes(viewedUser._id)) {
+      return <button className='addFriend' onClick={() => acceptFriendRequest(viewedUser._id)}>Accept Friend Request</button>
     }
 
     return <button className='addFriend' onClick={() => sendFriendRequest(viewedUser._id)}>Add Friend</button>
@@ -329,7 +344,7 @@ export default function UserProfile () {
                   <p className='commentContent'>{comment.content}</p>
                   <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
                   <p className='commentLikes'>Likes: {comment.likes}</p>
-                  <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id, post._id)}>Like</button>
+                  <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id, post._id)}><FontAwesomeIcon icon={faHeart} /></button>
                   {/* <button className='editCommentButton'>Edit</button> */}
 
                     {/* Only show the remove comment option if it is the logged in user's comment */}
