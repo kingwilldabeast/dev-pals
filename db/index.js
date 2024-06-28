@@ -3,15 +3,9 @@
 const mongoose = require('mongoose')
 
 mongoose
-<<<<<<< HEAD
-    .connect('mongodb://127.0.0.1:27017/dev-pals') //replace DATABASE_NAME with the actual name of database. only thing that changes
-    // .connect('mongodb+srv://parpace:tyghbn11@student-cluster.ta01bhl.mongodb.net/?retryWrites=true&w=majority&appName=student-cluster') //Parker puts his stupid little Atlas code here
-      .then(() => {
-=======
-    .connect('mongodb://127.0.0.1:27017/dev-pals') 
-    // .connect('mongodb+srv://parpace:tyghbn11@student-cluster.ta01bhl.mongodb.net/?retryWrites=true&w=majority&appName=student-cluster')
+    // .connect('mongodb://127.0.0.1:27017/dev-pals') 
+    .connect('mongodb+srv://parpace:tyghbn11@student-cluster.ta01bhl.mongodb.net/?retryWrites=true&w=majority&appName=student-cluster')
     .then(() => {
->>>>>>> 4b5ec0cd19d28137069b2a077fdc525510383c65
         console.log('Successfully connected to MongoDB.')
       })
       .catch((e) => console.error('Connection error', e.message))

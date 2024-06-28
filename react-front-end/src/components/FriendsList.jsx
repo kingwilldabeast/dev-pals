@@ -47,6 +47,7 @@ export default function FriendsList () {
     } catch (error) {
         console.error('Error accepting friend request:', error)
     }
+    window.location.reload()
   }
 
   const declineFriendRequest = async (requestingUserId) => {
