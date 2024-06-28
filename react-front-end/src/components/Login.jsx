@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../component-style/login.css'
 
-
 export default function Login () {
   const loggedInUser = localStorage.getItem('loggedInUser')
   
@@ -48,7 +47,6 @@ export default function Login () {
       console.error("Error fetching data:", error)
     }
   }
-
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -62,7 +60,6 @@ export default function Login () {
       })
       return
     }
-
     // Checks Password
     if (user.password !== formState.password) {
       setFormState({
@@ -73,14 +70,12 @@ export default function Login () {
     }
     getUserId(formState.username)
   }
-  
   const handleChange = (e) => {
     setFormState({...formState,
       [e.target.id] : e.target.value,
       error:''
     })
   }
-
   return (
     <div className="welcomeContainer">
       <div className="loginTitleContainer">
@@ -117,6 +112,5 @@ export default function Login () {
         </div>
       </form>
     </div>
-    
   )
 }
