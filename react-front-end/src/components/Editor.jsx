@@ -8,131 +8,126 @@ import { faPenToSquare, faHeart, faTrashCan, faXmark, faArrowLeft, faCheck} from
 
 export default function Editor () {
   
-    let navigate = useNavigate()
-    const loggedInUser = localStorage.getItem('loggedInUser')
-    const [activeUser, setActiveUser] = useState({})
-    const { username } = useParams()
-    const [message, setMessage]=useState('')
-    const [success, setSuccess] = useState(false);
-    const [failure, setFailure] = useState(false);
-    const initialState = {
-        username: "",
-        email: "",
-        password: "",
-        firstname: "",
-        lastname: "",
-        age: "",
-        location: "",
-        profilePicURL: "",
-    };
-    const [formState, setFormState]=useState(initialState);
+  let navigate = useNavigate()
+  const loggedInUser = localStorage.getItem('loggedInUser')
+  const [activeUser, setActiveUser] = useState({})
+  const { username } = useParams()
+  const [message, setMessage]=useState('')
+  const [success, setSuccess] = useState(false);
+  const [failure, setFailure] = useState(false);
+  const initialState = {
+      username: "",
+      email: "",
+      password: "",
+      firstname: "",
+      lastname: "",
+      age: "",
+      location: "",
+      profilePicURL: "",
+  };
+  const [formState, setFormState]=useState(initialState);
 
-    useEffect(() => {
+  useEffect(() => {
   
-      const getLoggedInUser = async () => {
-        const loggedInUserResponse = await axios.get(`http://localhost:3001/users/usernames/${username}`)
-        const loggedInUserData = loggedInUserResponse.data
-        setActiveUser(loggedInUserData)
+    const getLoggedInUser = async () => {
+      const loggedInUserResponse = await axios.get(`http://localhost:3001/users/usernames/${username}`)
+      const loggedInUserData = loggedInUserResponse.data
+      setActiveUser(loggedInUserData)
     }
     getLoggedInUser()
     
-}, [loggedInUser.username])
+  }, [loggedInUser.username])
 
 
-    useEffect(() => {
-        setFormState({
-        username: activeUser.username || "",
-        email: activeUser.email || "",
-        password: activeUser.password || "",
-        username: activeUser.username || "",
-        email: activeUser.email || "",
-        password: activeUser.password || "",
-        firstname: activeUser.firstname || "",
-        lastname: activeUser.lastname || "",
-        age: activeUser.age || "",
-        location: activeUser.location || "",
-        profilePicURL: activeUser.profilePicURL || ""
-        });
-    }, [activeUser]); 
+  useEffect(() => {
+      setFormState({
+      username: activeUser.username || "",
+      email: activeUser.email || "",
+      password: activeUser.password || "",
+      username: activeUser.username || "",
+      email: activeUser.email || "",
+      password: activeUser.password || "",
+      firstname: activeUser.firstname || "",
+      lastname: activeUser.lastname || "",
+      age: activeUser.age || "",
+      location: activeUser.location || "",
+      profilePicURL: activeUser.profilePicURL || ""
+      });
+  }, [activeUser]); 
 
-    // console.log(activeUser._id)
+  // console.log(activeUser._id)
 
-    const cancelAndReturn =(e) => {
-        navigate(`/username/${username}`);
-        };
+  const cancelAndReturn =(e) => {
+    navigate(`/username/${username}`);
+    };
 
-    const logout = () => {
-        // setLoggedInUser('')
-        localStorage.removeItem('loggedInUser')
-        navigate('/')
-        }
+  const logout = () => {
+    // setLoggedInUser('')
+    localStorage.removeItem('loggedInUser')
+    navigate('/')
+    }
 
     const deleteAccount = async (e) => {
-        try {
-            const response = await axios.delete(`http://localhost:3001/users/${activeUser._id}`, {
-            }, {
-                headers: {
-                "Content-Type": "application/json",
-                },
-            });
-                
-                console.log(`users are ${response.data}`)
-                if (response.status === 200) {
-                    console.log("account deleted");
-                    logout()
-                    navigate(`/signup`);
-                } else {
-                    console.error("Failed to delete account:", response.statusText);
-                }
-            } catch (error) {
-            console.error("Error:", error)
-            }
-    }
-
-    const handleSubmit =(e) => {
-        e.preventDefault()      
-        console.log(formState)
-        // setSuccess(true)
-        // setMessage("Account updated!")
-        updateAccount()
-        navigate(`/username/${formState.username}`);
-        };
-         
-
-    const updateAccount = async () => {
-    
-        try {
-        const response = await axios.put(`http://localhost:3001/users/${activeUser._id}`, {
-            username: formState.username,
-            email: formState.email,
-            password: formState.password,
-            firstname: formState.firstname,
-            lastname: formState.lastname,
-            age: formState.age,
-            location: formState.location,
-            profilePicURL: formState.profilePicURL
+      try {
+        const response = await axios.delete(`http://localhost:3001/users/${activeUser._id}`, {
         }, {
-            headers: {
+          headers: {
             "Content-Type": "application/json",
-            },
+          },
         });
             
-            console.log(`users are ${response.data}`)
-            if (response.status === 200) {
-                console.log("account updated");
-            } else {
-                console.error("Failed to update account:", response.statusText);
-            }
-        } catch (error) {
+        console.log(`users are ${response.data}`)
+        if (response.status === 200) {
+          console.log("account deleted");
+          logout()
+          navigate(`/signup`);
+        } else {
+          console.error("Failed to delete account:", response.statusText);
+        }
+      } catch (error) {
         console.error("Error:", error)
-        }
-    
+      }
     }
-        
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()      
+    console.log(formState)
+    // setSuccess(true)
+    // setMessage("Account updated!")
+    try {
+      const response = await axios.put(`http://localhost:3001/users/${activeUser._id}`, {
+          username: formState.username,
+          email: formState.email,
+          password: formState.password,
+          firstname: formState.firstname,
+          lastname: formState.lastname,
+          age: formState.age,
+          location: formState.location,
+          profilePicURL: formState.profilePicURL
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
           
-        const handleChange=(e) => {
-          setFormState({...formState, [e.target.id] : e.target.value})
-        }
+      console.log(`users are ${response.data}`)
+
+      if (response.status === 200) {
+        console.log("account updated");
+      } else {
+        console.error("Failed to update account:", response.statusText);
+      }
+
+      navigate(`/username/${formState.username}`, { state: { updatedUser: response.data } })
+
+    } catch (error) {
+      console.error("Error:", error)
+    }
+  };  
+          
+  const handleChange=(e) => {
+    setFormState({...formState, [e.target.id] : e.target.value})
+  }
       
 
   return (
