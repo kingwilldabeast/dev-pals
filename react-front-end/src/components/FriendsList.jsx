@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import Header from './Header'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import '../component-style/friendsList.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faHeart, faTrashCan, faXmark, faUserPlus, faUserMinus, faCheck } from '@fortawesome/free-solid-svg-icons'
+
 
 export default function FriendsList () {
   
@@ -63,6 +67,7 @@ export default function FriendsList () {
       <Header activeUser = {activeUser}/>
       <div className='friendRequests'>
         <h1>Friend Requests</h1>
+        <hr />
         {/* handle case when user has no friend requests */}
         {friendRequests.length === 0 ? (
           <h3>No Friend Requests</h3>
@@ -75,17 +80,18 @@ export default function FriendsList () {
                   <h2>{request.username}</h2>
                 </div>
               </Link>
-              <button className='acceptRequest' onClick={() => acceptFriendRequest(request._id)}>Accept</button>
-              <button className='declineRequest' onClick={() => declineFriendRequest(request._id)}>Decline</button>
+              <button className='acceptRequest' onClick={() => acceptFriendRequest(request._id)}><FontAwesomeIcon icon={faCheck} /></button>
+              <button className='declineRequest' onClick={() => declineFriendRequest(request._id)}><FontAwesomeIcon icon={faXmark} /></button>
             </div>
           ))
         )}
       </div>
       <div className='friendsList'>
       <h1>Friends</h1>
+      <hr />
         {/* handle case when user has no friends :( */}
         {friends.length === 0 ? (
-          <h1>Add friends to see them here!</h1>
+          <h3>Add friends to see them here!</h3>
         ) : (
           friends.map(friend => (
             <div className='friend' key={friend._id}>
