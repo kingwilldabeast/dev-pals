@@ -130,5 +130,8 @@ function GetStartedModal({ show, handleClose }) {
   export default GetStartedModal;
 
 
+
+  // used chatgpt to help with any asynchonous issues and react-bootstrap.netlify for how to use the Modal.
   
+
 
