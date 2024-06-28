@@ -5,11 +5,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 const { User, Post, Comment } = require('../models') //with models/index.js
 
-// const User  = require('../models/brand') //without models/index.js
-// const Post  = require('../models/Post') //without inmodels/index.jsdex
-// const Comment  = require('../models/Comment') //without models/index.js
-
-
 const resetCollections = async () => {
     try {
         await User.deleteMany({});

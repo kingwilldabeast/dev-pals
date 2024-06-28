@@ -1,5 +1,5 @@
 # dev-pals
-## Social media account project
+## Social media for Developers
 
 ## Members:
 * Will Isenberg https://github.com/kingwilldabeast/dev-pals
@@ -12,50 +12,51 @@
 This is a social media platform that will allow users to do the following: (AAUIWT)
 
 * Create a new account with username and password on sign-in page
-* Login to existing account with username and password on log-in page
+* Login to existing account with username and password
 * Edit user information after logging in 
-* Create posts, tweets, and (upload images stretch goal??)
-* Edit one's own posts and tweets
-* View the information and posts and tweets of other users (friends) without being able to edit their details
-* Comment/reply on one's own or other's posts and tweets (but not comments upon comments)
-* Upvote or downvote posts/tweets/comments
+* Create posts
+* Comment and upvote posts
 
 Stretch Goals:
 * Upload images from computer
-* comments on comments
-* befriend other users with bi-directional relationship where each user has an array of friends and appears in their list as well
+* Comments on comments
+* Befriend other users with bi-directional relationship where each user has an array of friends and appears in their list as well
 
 Team Member duties:
-* Parker: front end React
-* Leon: front end Styles
-* Azalea: back end 
-* Will: back end 
+* Parker: user profile page, posts, comments
+* Leon: login page, CSS
+* Azalea: signup page
+* Will: edit user info page
 
 Friday: (all members)
 * set up all files and import everything
 * plan ERD and components and models/schemas 
+* set up all models and controllers in backend
 * define editing permission rules in GitHub
 
 Monday:
-* Parker: Main and Nav, Footer and Header links
-* Leon: Sign in and Log in page (Main) and passwords
-* Azalea: model/Schema/controller for user
-* Will: model/Schema/controller for posts and comments
+* Parker: user profile page
+* Leon: login page password confirm
+* Azalea: sign in page
+* Will: edit user info
 
 Tuesday:
-* Parker: async axios call
-* Leon: user, post, comment design
-* Azalea: back end CRUD, seedfile
-* Will: back end CRUD
+* Parker: making posts
+* Leon: login page CSS
+* Azalea: sign in page password validator
+* Will: able to delete account
 
 Wednesday:
-* Parker: front end CRUD
-* Leon: front end CRUD
-* Azalea: back end CRUD, continued
-* Will: back end CRUD, continued 
+* Parker: upvoting posts
+* Leon: profile page CSS
+* Azalea: sign in page modal
+* Will: research password hashing and validating
 
 Thursday:
-* test and final debugging
+* Parker: making and upvoting comments
+* Leon: edit page CSS
+* Azalea: sign in page modal, continued
+* Will: research password hashing and validating
 
 Technologies used:
 * JavaScript
@@ -65,15 +66,32 @@ Technologies used:
 * React
 * Node.js (npm)
 
-Component Hierarchy Diagram (frontend):
+### Screenshots
+
+Sign up:
+![screenshot of sign up page](planning_materials/sign-up-page.png)
+
+Sign up modal:
+![screenshot of sign up page modal](planning_materials/sign-up-modal.png)
+
+Login in:
+![screenshot of log in page](planning_materials/log-in.png)
+
+Profile Page
+![screenshot of profile page](planning_materials/profile.png)
+
+Edit Info:
+![screenshot of edit page](planning_materials/edit.png)
+
+### Component Hierarchy Diagram (frontend):
 
 ![Component Hierarchy Diagram](planning_materials/component-hierarchy.png) 
 
-Entity relationship Diagram (backend):
+### Entity relationship Diagram (backend):
 
 ![Entity Relationship Diagram](planning_materials/ERD.png)
 
-Wireframe:
+### Wireframe:
 
 ![Wireframe](planning_materials/Dev-Pals-Wireframe-User%20Account%20Page.drawio.png)
 ![Wireframe](planning_materials/Dev-Pals-Wireframe-Login%20Page.drawio.png)

@@ -9,7 +9,6 @@ const PostSchema = new Schema(
         content: { type: String, required: true },
         likes: { type: Number, required: true },
         //array of users who liked it
-        //allow image uploader instead of text
     },
     {timestamps: true}
 
@@ -17,8 +16,3 @@ const PostSchema = new Schema(
 
 //VERSION THAT USES models/index.JS
 module.exports = PostSchema
-
-//ALTERNATE WITHOUT models/index.JS
-// const mongoose = require('mongoose')
-// const Book = mongoose.model('Book', bookSchema)
-// module.exports = Book

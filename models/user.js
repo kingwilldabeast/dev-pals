@@ -10,8 +10,6 @@ const UserSchema = new Schema(
         firstname: {type: String},
         lastname: {type: String},
         age: {type: String},
-        //DOB 
-        //array of skills 
         location: {type: String},
         profilePicURL: {type: String},
         likedPosts: [{ type: Schema.Types.ObjectId, ref:'Post' }],
@@ -25,8 +23,3 @@ const UserSchema = new Schema(
 
 //VERSION THAT USES models/index.JS
 module.exports = UserSchema
-
-//ALTERNATE WITHOUT models/index.JS
-// const mongoose = require('mongoose')
-// const Publisher = mongoose.model('Publisher', publisherSchema)
-// module.exports = Publisher

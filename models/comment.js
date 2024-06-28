@@ -17,8 +17,3 @@ const CommentSchema = new Schema(
 
 //VERSION THAT USES models/index.JS
 module.exports = CommentSchema
-
-//ALTERNATE WITHOUT models/index.JS
-// const mongoose = require('mongoose')
-// const Book = mongoose.model('Book', bookSchema)
-// module.exports = Book
