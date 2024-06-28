@@ -229,6 +229,7 @@ export default function UserProfile () {
     } catch (error) {
         console.error('Error accepting friend request:', error)
     }
+    window.location.reload()
   }
 
   const renderFriendButton = () => {
