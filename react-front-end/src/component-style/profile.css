@@ -114,3 +114,15 @@
 .likeCommentButton, .removeLikeCommentBtn {
   margin: 0 5px 10px 10px;
 }
+
+.addFriendBtn, .cancelFriendRequestBtn, .acceptFriendRequestBtn, .unfriendBtn {
+  margin: 20px 0 0 40px;
+  font-size: 1.2rem;
+}
+
+.addFriendBtn, .acceptFriendRequestBtn {
+  color: green;
+}
+.cancelFriendRequestBtn, .unfriendBtn {
+  color: red;
+}

@@ -1,0 +1,42 @@
+.friendsPage {
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+}
+
+.friendRequests, .friendsList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 100px auto;
+  background-color: #e8e8e8;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px #0000008a;
+}
+.friendRequests{
+  float: left;
+  margin-left: 300px;
+}
+.friendsList {
+  float: right;
+  margin-right: 300px;
+}
+.friendRequests hr{
+  margin-bottom: 20px;
+}
+.friendRequest, .friend {
+  margin: 40px 0 0 10px;
+  background-color: #FF8500;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px #0000008a;
+}
+.acceptRequest {
+  color: green;
+  margin-right: 20px;
+}
+.declineRequest {
+  color: red;
+}

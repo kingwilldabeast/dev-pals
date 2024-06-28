@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../component-style/header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faGear, faArrowRightFromBracket, faHouseUser, faUserGroup } from '@fortawesome/free-solid-svg-icons'
 
 export default function Header () {
   let navigate = useNavigate()
@@ -70,7 +70,7 @@ export default function Header () {
 
   return (
     <div className="headerContainer" >
-      <Link to={'/'}><button>Home</button></Link>
+      <Link className="homeBtn" to={'/'}><button><FontAwesomeIcon icon={faHouseUser} /></button></Link>
       {/* Search Bar */}
       <form className="searchBar" onSubmit={handleSubmit}>
         <input className="searchBar"
@@ -85,7 +85,7 @@ export default function Header () {
       </form>
       {/* More Bottons Options */}
       <div className="moreBtn">
-      <button className="friendsBtn" onClick={openFriendsList}>Friends</button>
+        <button className="friendsBtn" onClick={openFriendsList}><FontAwesomeIcon icon={faUserGroup} /></button>
         <button className="editorBtn" onClick={openEditor}><FontAwesomeIcon icon={faGear} /></button>
         <button className="logoutBtn" onClick={logout}><FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
       </div>

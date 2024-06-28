@@ -5,7 +5,7 @@ import profileImg from '../assets/profileImg.png'
 import axios from 'axios'
 import '../component-style/profile.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenToSquare, faHeart, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faHeart, faTrashCan, faXmark, faUserPlus, faUserMinus, faUserCheck, faUserSlash } from '@fortawesome/free-solid-svg-icons'
 
 export default function UserProfile () {
   
@@ -241,18 +241,18 @@ export default function UserProfile () {
     const viewedUserFriendRequests = viewedUser.friendRequests || []
 
     if (activeUserFriendsList.includes(viewedUser._id)) {
-        return <button className='addFriend' onClick={() => unfriend(viewedUser._id)}>Unfriend</button>
+        return <button className='unfriendBtn' onClick={() => unfriend(viewedUser._id)}><FontAwesomeIcon icon={faUserSlash} /></button>
     }
 
     if (viewedUserFriendRequests.includes(activeUser._id)) {
-        return <button className='addFriend' onClick={() => cancelFriendRequest(viewedUser._id)}>Cancel Friend Request</button>
+        return <button className='cancelFriendRequestBtn' onClick={() => cancelFriendRequest(viewedUser._id)}><FontAwesomeIcon icon={faUserMinus} /></button>
     }
 
     if (activeUserFriendRequests.includes(viewedUser._id)) {
-      return <button className='addFriend' onClick={() => acceptFriendRequest(viewedUser._id)}>Accept Friend Request</button>
+      return <button className='acceptFriendRequestBtn' onClick={() => acceptFriendRequest(viewedUser._id)}><FontAwesomeIcon icon={faUserCheck} /></button>
     }
 
-    return <button className='addFriend' onClick={() => sendFriendRequest(viewedUser._id)}>Add Friend</button>
+    return <button className='addFriendBtn' onClick={() => sendFriendRequest(viewedUser._id)}><FontAwesomeIcon icon={faUserPlus} /></button>
   }
 
   const navigateToUser = (username) => {
