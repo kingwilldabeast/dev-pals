@@ -5,18 +5,24 @@ import { Link, useNavigate } from 'react-router-dom'
 
 export default function FriendsList () {
   
+  const [activeUser, setActiveUser] = useState({})
   const [friends, setFriends] = useState([])
   const [friendRequests, setFriendRequests] = useState([])
   const loggedInUser = localStorage.getItem('loggedInUser')
   const navigate = useNavigate()
 
   useEffect(() => {
+    const getActiveUser = async () => {
+      const loggedInUserResponse = axios.get(`http://localhost:3001/users/${loggedInUser}`)
+      setActiveUser(loggedInUserResponse.data)
+    }
     const getFriends = async () => {
       const userResponse = await axios.get(`http://localhost:3001/users/friends/${loggedInUser}`)
       setFriends(userResponse.data.friendsList)
       setFriendRequests(userResponse.data.friendRequests)
     }
     if (loggedInUser) {
+      getActiveUser()
       getFriends()
     } else {
       navigate('/')
@@ -29,8 +35,23 @@ export default function FriendsList () {
     try {
         const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/acceptFriendRequest/${requestingUserId}`)
         console.log(response.data.loggedIn)
-        setFriends(response.data.loggedIn.friendsList)
-        setFriendRequests(response.data.loggedIn.friendRequests)
+        // avoid undefined errors by setting it to an empty array while it is populating
+        const friendsList = response.data.loggedIn.friendsList || []
+        const friendRequests = response.data.loggedIn.friendRequests || []
+        setFriends(friendsList)
+        setFriendRequests(friendRequests)
+    } catch (error) {
+        console.error('Error accepting friend request:', error)
+    }
+  }
+
+  const declineFriendRequest = async (requestingUserId) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/declineFriendRequest/${requestingUserId}`)
+        console.log(response.data.loggedIn)
+        // avoid undefined errors by setting it to an empty array while it is populating
+        const friendRequests = response.data.loggedIn.friendRequests || []
+        setFriendRequests(friendRequests)
     } catch (error) {
         console.error('Error accepting friend request:', error)
     }
@@ -38,7 +59,7 @@ export default function FriendsList () {
 
   return (
     <div className='friendsPage'>
-      <Header/>
+      <Header activeUser = {activeUser}/>
       <div className='friendRequests'>
         <h1>Friend Requests</h1>
         {/* handle case when user has no friend requests */}
@@ -54,6 +75,7 @@ export default function FriendsList () {
                 </div>
               </Link>
               <button className='acceptRequest' onClick={() => acceptFriendRequest(request._id)}>Accept</button>
+              <button className='declineRequest' onClick={() => declineFriendRequest(request._id)}>Decline</button>
             </div>
           ))
         )}
@@ -65,12 +87,12 @@ export default function FriendsList () {
           <h1>Add friends to see them here!</h1>
         ) : (
           friends.map(friend => (
-            <Link key={friend._id} to={`/username/${friend.username}`}>
-              <div className='friend'>
+            <div className='friend' key={friend._id}>
+              <Link to={`/username/${friend.username}`}>
                 {/* <img className='friendImg' src={friend.profilePicURL}/> */}
                 <h2>{friend.username}</h2>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))
         )}
       </div>

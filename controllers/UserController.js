@@ -246,6 +246,30 @@ const acceptFriendRequest  = async (req, res) => {
     }
 }
 
+const declineFriendRequest  = async (req, res) => {
+    try {
+        const { loggedInUser, requestingUser } = req.params
+
+        const loggedIn = await User.findById(loggedInUser)
+        const requester = await User.findById(requestingUser)
+
+        if (!loggedIn || !requester) {
+            return res.status(404).json({ error: 'User not found' })
+        }
+
+        if (loggedIn.friendRequests.includes(requestingUser)) {
+            loggedIn.friendRequests.pull(requestingUser)
+            await loggedIn.save()
+        }
+
+        res.status(200).json({
+            loggedIn: loggedIn
+        })
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+}
+
 const unfriend = async (req, res) => {
     try {
         const { loggedInUser, friendUserId } = req.params
@@ -308,5 +332,6 @@ module.exports = {
     acceptFriendRequest,
     sendFriendRequest,
     unfriend,
-    cancelFriendRequest
+    cancelFriendRequest,
+    declineFriendRequest
 }

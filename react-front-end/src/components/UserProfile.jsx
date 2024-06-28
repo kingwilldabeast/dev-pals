@@ -41,6 +41,7 @@ export default function UserProfile () {
 
         setViewedUser(viewedUserResponse.data)
         setActiveUser(loggedInUserResponse.data)
+        // console.log(loggedInUserResponse.data)
         setPosts(userPostsResponse.data)
 
         userPostsResponse.data.forEach(post => {
@@ -213,8 +214,8 @@ export default function UserProfile () {
   const cancelFriendRequest = async (friendUserId) => {
     try {
         const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/cancelFriendRequest/${friendUserId}`)
-        console.log(response.data)
-        setViewedUser(response.data)
+        // console.log(response.data)
+        setViewedUser(response.data.requestedFriend)
     } catch (error) {
         console.error('Error unfriending:', error)
     }
@@ -224,12 +225,15 @@ export default function UserProfile () {
     if (activeUser.username === viewedUser.username) {
         return null
     }
+  // This fixed an issue where activeUser.friendsList was undefined sometimes after pressing the button
+    const friendsList = activeUser.friendsList || []
+    const friendRequests = viewedUser.friendRequests || []
 
-    if (activeUser.friendsList.includes(viewedUser._id)) {
+    if (friendsList.includes(viewedUser._id)) {
         return <button className='addFriend' onClick={() => unfriend(viewedUser._id)}>Unfriend</button>
     }
 
-    if (viewedUser.friendRequests.includes(activeUser._id)) {
+    if (friendRequests.includes(activeUser._id)) {
         return <button className='addFriend' onClick={() => cancelFriendRequest(viewedUser._id)}>Cancel Friend Request</button>
     }
 

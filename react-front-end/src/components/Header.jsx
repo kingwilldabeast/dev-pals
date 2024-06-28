@@ -5,13 +5,23 @@ import '../component-style/header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
-export default function Header (props) {
+export default function Header () {
   let navigate = useNavigate()
 
+  const loggedInUser = localStorage.getItem('loggedInUser')
+  const [activeUser, setActiveUser] = useState({})
   const [inputInProgress, setInputInProgress] = useState({ searchBar: '' });
   const [profile, setProfile] = useState('');
-  const activeUser = props.activeUser
   
+  useEffect(() => {
+    const getActiveUser = async () => {
+      const loggedInUserResponse = await axios.get(`http://localhost:3001/users/${loggedInUser}`)
+      // console.log(loggedInUserResponse.data)
+      setActiveUser(loggedInUserResponse.data)
+    }
+    getActiveUser()
+  }, [loggedInUser])
+
   const updateTyping = (e) => {
     setInputInProgress({ ...inputInProgress, [e.target.name]: e.target.value });
   }
