@@ -41,6 +41,7 @@ export default function UserProfile () {
 
         setViewedUser(viewedUserResponse.data)
         setActiveUser(loggedInUserResponse.data)
+        // console.log(loggedInUserResponse.data)
         setPosts(userPostsResponse.data)
 
         userPostsResponse.data.forEach(post => {
@@ -93,7 +94,11 @@ export default function UserProfile () {
     setPostText('')
   }
 
-  const handleCommentOnPost = async (postId, commentContent) => {
+  const handleCommentOnPost = async (postId, commentContent, e) => {
+    if(e) {
+      e.preventDefault()
+    }
+
     // This is to avoid console errors when a comment is submitted with no value
     if (!commentContent || commentContent.trim() === '') {
       alert('Please input a comment before submitting')
@@ -186,6 +191,70 @@ export default function UserProfile () {
     }
   }
 
+  const sendFriendRequest = async (requestUserId) => {
+    try {
+      const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/sendFriendRequest/${requestUserId}`)
+      console.log(response.data)
+      setViewedUser(response.data)
+    } catch (error) {
+      console.error('Error sending friend request:', error)
+    }
+  }
+
+  const unfriend = async (friendUserId) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/unfriend/${friendUserId}`)
+        console.log(response.data)
+        setActiveUser(response.data.loggedIn)
+    } catch (error) {
+        console.error('Error unfriending:', error)
+    }
+  }
+
+  const cancelFriendRequest = async (friendUserId) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/cancelFriendRequest/${friendUserId}`)
+        // console.log(response.data)
+        setViewedUser(response.data.requestedFriend)
+    } catch (error) {
+        console.error('Error unfriending:', error)
+    }
+  }
+
+  const acceptFriendRequest = async (requestingUserId) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/users/${loggedInUser}/acceptFriendRequest/${requestingUserId}`)
+        console.log(response.data.requester)
+        setViewedUser(response.data.requester)
+    } catch (error) {
+        console.error('Error accepting friend request:', error)
+    }
+  }
+
+  const renderFriendButton = () => {
+    if (activeUser.username === viewedUser.username) {
+        return null
+    }
+  // This fixed an issue where activeUser.friendsList was undefined sometimes after pressing the button
+    const activeUserFriendsList = activeUser.friendsList || []
+    const activeUserFriendRequests = activeUser.friendRequests || []
+    const viewedUserFriendRequests = viewedUser.friendRequests || []
+
+    if (activeUserFriendsList.includes(viewedUser._id)) {
+        return <button className='addFriend' onClick={() => unfriend(viewedUser._id)}>Unfriend</button>
+    }
+
+    if (viewedUserFriendRequests.includes(activeUser._id)) {
+        return <button className='addFriend' onClick={() => cancelFriendRequest(viewedUser._id)}>Cancel Friend Request</button>
+    }
+
+    if (activeUserFriendRequests.includes(viewedUser._id)) {
+      return <button className='addFriend' onClick={() => acceptFriendRequest(viewedUser._id)}>Accept Friend Request</button>
+    }
+
+    return <button className='addFriend' onClick={() => sendFriendRequest(viewedUser._id)}>Add Friend</button>
+  }
+
   const navigateToUser = (username) => {
     navigate(`/username/${username}`)
   }
@@ -193,6 +262,9 @@ export default function UserProfile () {
   return (
     <div className='userProfile'>
       <Header activeUser = {activeUser}/>
+
+      {renderFriendButton()}
+
       <div className='aboutUser'>
         <img className="profileImage" src={profileImg} alt="Profile Image" width={150} />
         <div className="userInfo">
@@ -237,7 +309,7 @@ export default function UserProfile () {
                 
               {/* Only show the comment form if the comment button has been clicked. Otherwise, show the comment button */}
               {commentFormVisible[post._id] ? (
-                <div>
+                <form>
                   <input className='replyPost'
                     type="text"
                     value={commentText[post._id] || ''}
@@ -253,7 +325,7 @@ export default function UserProfile () {
                     [post._id]: false
                   })}><FontAwesomeIcon icon={faXmark} /></button>
                   
-                </div>
+                </form>
               ) : (
                 <button className='commentButton' onClick={() => setCommentFormVisible({
                   ...commentFormVisible,
@@ -272,7 +344,7 @@ export default function UserProfile () {
                   <p className='commentContent'>{comment.content}</p>
                   <p className='commentData'>{new Date(comment.created_at).toLocaleString()}</p>
                   <p className='commentLikes'>Likes: {comment.likes}</p>
-                  <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id, post._id)}>Like</button>
+                  <button className='likeCommentButton' onClick={() => handleToggleLikeComment(comment._id, post._id)}><FontAwesomeIcon icon={faHeart} /></button>
                   {/* <button className='editCommentButton'>Edit</button> */}
 
                     {/* Only show the remove comment option if it is the logged in user's comment */}
