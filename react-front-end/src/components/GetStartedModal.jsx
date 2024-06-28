@@ -19,19 +19,19 @@ function GetStartedModal({ show, handleClose }) {
   useEffect(() => {
     
     const getUsername = async () => {
-        if (loggedInUser) {
-          try {
-            const response = await axios.get(`http://localhost:3001/users/${loggedInUser}`)
-            setUsername(response.data.username)
-          } catch (error) {
-            console.error('Error fetching username:', error)
-          }
+      if (loggedInUser) {
+        try {
+          const response = await axios.get(`http://localhost:3001/users/${loggedInUser}`)
+          setUsername(response.data.username)
+        } catch (error) {
+          console.error('Error fetching username:', error)
         }
-      };
+      }
+    };
       getUsername()
-    }, [loggedInUser])
+  }, [loggedInUser])
 
-    console.log(username)
+    // console.log(username)
         
     const handleChange = (e) => {
       setFormState({ ...formState, [e.target.id]: e.target.value });
@@ -45,9 +45,33 @@ function GetStartedModal({ show, handleClose }) {
       }
       console.log('Form submitted:', formState);
   
+      updateAccount()
       handleClose();
       navigate(`/username/${username}`)
     };
+
+    const updateAccount = async () => {
+      try {
+      const response = await axios.put(`http://localhost:3001/users/${loggedInUser}`, {
+          firstname: formState.firstname,
+          lastname: formState.lastname,
+          age: formState.age
+      }, {
+          headers: {
+          "Content-Type": "application/json",
+          },
+      });
+          
+          console.log(`users are ${response.data}`)
+          if (response.status === 200) {
+              console.log("account updated");
+          } else {
+              console.error("Failed to update account:", response.statusText);
+          }
+      } catch (error) {
+      console.error("Error:", error)
+      }
+    }
 
     return (
       <Modal show={show} onHide={handleClose}>
