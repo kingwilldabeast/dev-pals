@@ -1,8 +1,4 @@
-
-    
-//ASYNC versions, if using mongoose
 const {Comment} = require('../models'); //with models/index.js file
-//const Comment = require('../models/Comment'); //without models/index.js file
 
 //Read
 const getAllComments = async (req, res) => {

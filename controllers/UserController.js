@@ -1,8 +1,4 @@
-
-    
-//ASYNC versions, if using mongoose
 const {User, Post, Comment} = require('../models'); //with models/index.js file
-//const User = require('../models/User'); //without models/index.js file
 
 //Read
 const getAllUsers = async (req, res) => {
@@ -89,9 +85,6 @@ const createUser = async (req, res) => {
             newObject,
         });
     } catch (error) {
-        // if (error.name === 'CastError' && error.kind === 'ObjectId') {
-        //     return res.status(404).send(`That User doesn't exist`)
-        // }
         return res.status(500).json({ error: error.message })
     }
 }
