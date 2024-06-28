@@ -218,6 +218,7 @@ const sendFriendRequest = async (req,res) => {
         return res.status(500).send(error.message)
     }
 }
+
 const acceptFriendRequest  = async (req, res) => {
     try {
         const { loggedInUser, requestingUser } = req.params
