@@ -3,8 +3,8 @@
 const mongoose = require('mongoose')
 
 mongoose
-    // .connect('mongodb://127.0.0.1:27017/dev-pals') 
-    .connect('mongodb+srv://parpace:tyghbn11@student-cluster.ta01bhl.mongodb.net/?retryWrites=true&w=majority&appName=student-cluster')
+    .connect('mongodb://127.0.0.1:27017/dev-pals') 
+    // .connect('mongodb+srv://parpace:tyghbn11@student-cluster.ta01bhl.mongodb.net/?retryWrites=true&w=majority&appName=student-cluster')
     .then(() => {
         console.log('Successfully connected to MongoDB.')
       })
