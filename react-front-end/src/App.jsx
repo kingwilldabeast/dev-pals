@@ -6,7 +6,7 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import UserProfile from './components/UserProfile'
 import Editor from './components/Editor'
-// import FriendsList from './components/FriendsList'
+import FriendsList from './components/FriendsList'
 
 function App() {
 
@@ -17,7 +17,7 @@ function App() {
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/username/:username" element={<UserProfile/>}/>
         <Route path="/username/edit/:username" element={<Editor/>}/>
-        {/* <Route path="/userProfile/:userId/friends" element={<FriendsList/>}/> */}
+        <Route path="/username/:username/friends" element={<FriendsList/>}/>
       </Routes>
     </>
   )

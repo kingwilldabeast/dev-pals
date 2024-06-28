@@ -1,17 +1,27 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../component-style/header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 
-export default function Header (props) {
+export default function Header () {
   let navigate = useNavigate()
 
+  const loggedInUser = localStorage.getItem('loggedInUser')
+  const [activeUser, setActiveUser] = useState({})
   const [inputInProgress, setInputInProgress] = useState({ searchBar: '' });
   const [profile, setProfile] = useState('');
-  const activeUser = props.activeUser
   
+  useEffect(() => {
+    const getActiveUser = async () => {
+      const loggedInUserResponse = await axios.get(`http://localhost:3001/users/${loggedInUser}`)
+      // console.log(loggedInUserResponse.data)
+      setActiveUser(loggedInUserResponse.data)
+    }
+    getActiveUser()
+  }, [loggedInUser])
+
   const updateTyping = (e) => {
     setInputInProgress({ ...inputInProgress, [e.target.name]: e.target.value });
   }
@@ -41,6 +51,10 @@ export default function Header (props) {
     navigate(`/username/edit/${activeUser.username}`);
   }
 
+  const openFriendsList = (e) => {
+    navigate(`/username/${activeUser.username}/friends`);
+  }
+
   const logout = () => {
     localStorage.removeItem('loggedInUser')
     navigate('/')
@@ -56,7 +70,7 @@ export default function Header (props) {
 
   return (
     <div className="headerContainer" >
-      {/* <p>{`Welcome ${loggedInUser.username}`}</p> */}
+      <Link to={'/'}><button>Home</button></Link>
       {/* Search Bar */}
       <form className="searchBar" onSubmit={handleSubmit}>
         <input className="searchBar"
@@ -71,6 +85,7 @@ export default function Header (props) {
       </form>
       {/* More Bottons Options */}
       <div className="moreBtn">
+      <button className="friendsBtn" onClick={openFriendsList}>Friends</button>
         <button className="editorBtn" onClick={openEditor}><FontAwesomeIcon icon={faGear} /></button>
         <button className="logoutBtn" onClick={logout}><FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
       </div>
